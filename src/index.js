@@ -1,13 +1,29 @@
+// React
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+
+// Components
 import App from './App';
+
+// Redux
+import { Provider as StoreProvider } from 'react-redux';
+import configureStore from './store/configure.js';
+
+// Styles
+import './index.css';
+import './assets/main.css';
+import 'semantic-ui-css/semantic.min.css';
+
+// Misc
 import * as serviceWorker from './serviceWorker';
 
+const initialState = {};
+const store = configureStore(initialState);
+
 ReactDOM.render(
-  <React.StrictMode>
+  <StoreProvider store={store}>
     <App />
-  </React.StrictMode>,
+  </StoreProvider>,
   document.getElementById('root')
 );
 
