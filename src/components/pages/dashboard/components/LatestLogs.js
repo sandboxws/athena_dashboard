@@ -13,7 +13,7 @@ function LatestLogs(props) {
       <h2 class="text-xl mb-3 text-gray-700">
         Latest Logs
       </h2>
-      <Table celled striped>
+      <Table celled striped sortable>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Collection</Table.HeaderCell>
