@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { HorizontalBar } from 'react-chartjs-2';
 import Stat from './Stat';
 
-export default class Charts extends Component {
-  render() {
-    const operationsData = {
+function Charts(props) {
+  const { dashboard } = props;
+  const operationsData = {
       labels: ['Find', 'Insert', 'Update', 'Distinct', 'Delete', 'Aggregate', 'Count', 'GetMore'],
       datasets: [
         {
@@ -14,7 +14,16 @@ export default class Charts extends Component {
           borderWidth: 1,
           hoverBackgroundColor: 'rgba(255,99,132,0.4)',
           hoverBorderColor: 'rgba(255,99,132,1)',
-          data: [1023, 33, 138, 8, 0, 70, 95, 0]
+          data: [
+            `${dashboard.find.totalCount}`,
+            `${dashboard.insert.totalCount}`,
+            `${dashboard.update.totalCount}`,
+            `${dashboard.distinct.totalCount}`,
+            `${dashboard.delete.totalCount}`,
+            `${dashboard.aggregate.totalCount}`,
+            `${dashboard.count.totalCount}`,
+            `${dashboard.getMore.totalCount}`,
+          ]
         }
       ]
     };
@@ -28,7 +37,16 @@ export default class Charts extends Component {
           borderWidth: 1,
           hoverBackgroundColor: 'rgba(255,99,132,0.4)',
           hoverBorderColor: 'rgba(255,99,132,1)',
-          data: [0.188025, 0.18, 1.1, 0.01, 0.003, 0, 0.02, 0]
+          data: [
+            `${dashboard.find.maxDuration}`,
+            `${dashboard.insert.maxDuration}`,
+            `${dashboard.update.maxDuration}`,
+            `${dashboard.distinct.maxDuration}`,
+            `${dashboard.delete.maxDuration}`,
+            `${dashboard.aggregate.maxDuration}`,
+            `${dashboard.count.maxDuration}`,
+            `${dashboard.getMore.maxDuration}`,
+          ]
         }
       ]
     };
@@ -42,5 +60,6 @@ export default class Charts extends Component {
         </div>
       </div>
     );
-  }
 }
+
+export default Charts;

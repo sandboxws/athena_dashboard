@@ -1,16 +1,14 @@
 import React from 'react';
 import { Table } from 'semantic-ui-react'
 import Log from './Log';
+import { Query } from 'react-apollo';
+import { DASHBOARD_LATEST_LOGS_GQL } from '../../../../queries/pages/dashboard';
 
 function LatestLogs(props) {
-  // To be fetched from GQL
-  const latestLogs = [
-    { collection: 'passes', operation: 'find', command: '{}', duration: 0.18805 },
-    { collection: 'stripe_connect_permissions', operation: 'find', command: '{}', duration: 0.17716 },
-  ];
+  const { mongodbLatestLogs } = props;
   return (
     <div>
-      <h2 class="text-xl mb-3 text-gray-700">
+      <h2 className="text-xl mb-3 text-gray-700">
         Latest Logs
       </h2>
       <Table celled striped sortable>
@@ -25,7 +23,7 @@ function LatestLogs(props) {
         </Table.Header>
 
         <Table.Body>
-          { latestLogs.map(log => <Log log={log} />) }
+          {mongodbLatestLogs.map(log => <Log key={log.id} log={log} />)}
         </Table.Body>
       </Table>
     </div>

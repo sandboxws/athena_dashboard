@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Menu } from 'semantic-ui-react';
+import { Menu, Input } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 export default class TopMenu extends Component {
@@ -40,6 +40,12 @@ export default class TopMenu extends Component {
           active={activeItem === 'stacktraces'}
           onClick={this.handleItemClick}
         />
+
+        <Menu.Menu position='right'>
+          <Menu.Item>
+            <Input icon='search' placeholder='Search...' />
+          </Menu.Item>
+        </Menu.Menu>
       </Menu>
     )
   }
