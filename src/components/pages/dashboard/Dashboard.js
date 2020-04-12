@@ -4,6 +4,7 @@ import { Container } from 'semantic-ui-react';
 import PageTitle from '../../common/PageTitle';
 import Charts from './components/Charts';
 import LatestLogs from './components/LatestLogs';
+import LatestControllers from './components/LatestControllers';
 import Stats from './components/Stats';
 import { Query } from 'react-apollo';
 import { DASHBOARD_GQL } from '../../../queries/pages/dashboard';
@@ -25,6 +26,7 @@ export default class Dashboard extends Component {
                 <Charts dashboard={dashboard} />
                 <hr className="mt-2 border-b-1 border-gray-200 mt-10 mb-5" />
                 <LatestLogs mongodbLatestLogs={dashboard.mongodbLatestLogs} />
+                <LatestControllers mongodbLatestControllers={dashboard.mongodbLatestControllers} />
               </>
             )
           }}

@@ -16,6 +16,12 @@ export const DASHBOARD_GQL = gql `
         }
         createdAt
       },
+      mongodbLatestControllers {
+        action
+        name
+        path
+        logsCount
+      },
       find {
         totalCount
         maxDuration

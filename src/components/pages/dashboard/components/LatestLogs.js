@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table } from 'semantic-ui-react'
+import { Table, Divider } from 'semantic-ui-react'
 import Log from './Log';
 import { Query } from 'react-apollo';
 import { DASHBOARD_LATEST_LOGS_GQL } from '../../../../queries/pages/dashboard';
@@ -7,10 +7,8 @@ import { DASHBOARD_LATEST_LOGS_GQL } from '../../../../queries/pages/dashboard';
 function LatestLogs(props) {
   const { mongodbLatestLogs } = props;
   return (
-    <div>
-      <h2 className="text-xl mb-3 text-gray-700">
-        Latest Logs
-      </h2>
+    <div className="mt-10">
+      <Divider horizontal>Latest Logs</Divider>
       <Table celled striped sortable>
         <Table.Header>
           <Table.Row>

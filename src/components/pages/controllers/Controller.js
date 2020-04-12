@@ -23,7 +23,7 @@ import { Button, Table } from 'semantic-ui-react';
         <Table.Cell>{this.state.logs}</Table.Cell>
         <Table.Cell>{this.state.duration}</Table.Cell>
         <Table.Cell>
-          <Button>Inspect</Button>
+          <Button size="mini" color="blue">Inspect</Button>
         </Table.Cell>
       </Table.Row>
     );

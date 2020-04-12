@@ -12,6 +12,7 @@ export default class TopMenu extends Component {
 
     return (
       <Menu inverted>
+        <Menu.Item header>Awesome Explain</Menu.Item>
         <Menu.Item
           as={Link}
           name='dashboard'
@@ -22,21 +23,21 @@ export default class TopMenu extends Component {
         <Menu.Item
           as={Link}
           name='logs'
-          to='logs'
+          to='/logs'
           active={activeItem === 'logs'}
           onClick={this.handleItemClick}
         />
         <Menu.Item
           as={Link}
           name='controllers'
-          to='controllers'
+          to='/controllers'
           active={activeItem === 'controllers'}
           onClick={this.handleItemClick}
         />
         <Menu.Item
           as={Link}
           name='stacktraces'
-          to='stacktraces'
+          to='/stacktraces'
           active={activeItem === 'stacktraces'}
           onClick={this.handleItemClick}
         />

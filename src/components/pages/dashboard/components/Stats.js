@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu } from 'semantic-ui-react';
+import { Menu, Statistic } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { Query } from 'react-apollo';
 import Stat from './Stat';
