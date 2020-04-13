@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Accordion, Button, Icon, Table, Label } from 'semantic-ui-react'
-// import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-// import cb from 'react-syntax-highlighter/dist/esm/styles/prism/duotone-earth.js';
+import { Link } from 'react-router-dom';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import syntaxStyle from 'react-syntax-highlighter/dist/esm/styles/hljs/atom-one-light.js';
 import operationColor from '../../../common/CommandColors';
@@ -18,7 +17,7 @@ export default class Log extends Component {
   }
 
   render() {
-    const { collection, operation, command, commandExcerpt, duration } = this.props.log;
+    const { id, collection, operation, command, commandExcerpt, duration } = this.props.log;
     const { activeIndex } = this.state;
     const customStyle = {
       backgroundColor: 'blue'
@@ -50,7 +49,7 @@ export default class Log extends Component {
         </Table.Cell>
         <Table.Cell>{duration}</Table.Cell>
         <Table.Cell>
-          <Button size="mini" color="blue">Inspect</Button>
+          <Button as={Link} size="mini" color="blue" to={`/logs/${id}`}>Inspect</Button>
         </Table.Cell>
       </Table.Row>
     );

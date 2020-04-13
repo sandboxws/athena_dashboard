@@ -16,6 +16,7 @@ export const LATEST_LOGS_GQL = gql `
         operation
         duration
         controller {
+          id
           action
           name
           path
@@ -52,6 +53,7 @@ export const LATEST_LOGS_WITH_STATS_GQL = gql `
           operation
           duration
           controller {
+            id
             action
             name
             path
@@ -79,17 +81,19 @@ export const SHOW_LOG_GQL = gql `
       collscan
       command
       commandExcerpt
+      stacktrace {
+        id
+        stacktrace
+      }
       explain {
+        id
         documentsExamined
         documentsReturned
         duration
         keysExamined
         rejectedPlans
         usedIndexes
-        stacktrace {
-          id
-          stacktrace
-        }
+        stagesCount
       }
       controller {
         id

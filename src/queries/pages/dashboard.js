@@ -3,6 +3,11 @@ import gql from 'graphql-tag'
 export const DASHBOARD_GQL = gql `
   query {
     dashboard {
+      stats {
+        name,
+        totalCount,
+        maxDuration
+      }
       mongodbLatestLogs(limit: 10) {
         id
         collection
@@ -10,10 +15,6 @@ export const DASHBOARD_GQL = gql `
         command
         commandExcerpt
         duration
-        controller {
-          name
-          action
-        }
         createdAt
       },
       mongodbLatestControllers {
@@ -21,38 +22,6 @@ export const DASHBOARD_GQL = gql `
         name
         path
         logsCount
-      },
-      find {
-        totalCount
-        maxDuration
-      },
-      insert {
-        totalCount
-        maxDuration
-      },
-      update {
-        totalCount
-        maxDuration
-      },
-      distinct {
-        totalCount
-        maxDuration
-      },
-      delete {
-        totalCount
-        maxDuration
-      },
-      aggregate {
-        totalCount
-        maxDuration
-      },
-      count {
-        totalCount
-        maxDuration
-      },
-      getMore {
-        totalCount
-        maxDuration
       }
     }
   }
@@ -62,15 +31,12 @@ export const DASHBOARD_LATEST_LOGS_GQL = gql `
   query {
     dashboard {
       mongodbLatestLogs(limit: 10) {
+        id
         collection
         operation
         command
         commandExcerpt
         duration
-        controller {
-          name
-          action
-        }
         createdAt
       }
     }

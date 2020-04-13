@@ -75,25 +75,6 @@ export default class Logs extends Component {
                   defaultValue={this.state.selectedOperations}
                   onChange={(e,optionsObj) => this.setState({selectedOperations: optionsObj.value})}
                 />
-                {/* <div>
-                  <Divider horizontal>collections stats</Divider>
-                  {collectionsStats.map(stat =>
-                    <Label key={stat.name}>
-                      {stat.name}
-                      <Label.Detail>{stat.value}</Label.Detail>
-                    </Label>
-                  )}
-                </div>
-
-                <div className="mt-10 mb-10">
-                  <Divider horizontal>operations stats</Divider>
-                  {operationsStats.map(stat =>
-                    <Label key={stat.name} color={operationColor(stat.name)} horizontal>
-                      {stat.name}
-                      <Label.Detail>{stat.value}</Label.Detail>
-                    </Label>
-                  )}
-                </div> */}
 
                 <Table celled striped sortable>
                   <Table.Header>
@@ -120,7 +101,6 @@ export default class Logs extends Component {
                           size='mini'
                           siblingRange={siblingRange}
                           totalPages={totalPages}
-                          // Heads up! All items are powered by shorthands, if you want to hide one of them, just pass `null` as value
                           ellipsisItem={showEllipsis ? undefined : null}
                           firstItem={showFirstAndLastNav ? undefined : null}
                           lastItem={showFirstAndLastNav ? undefined : null}

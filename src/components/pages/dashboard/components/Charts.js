@@ -7,61 +7,63 @@ import {
 } from 'recharts';
 
 function Charts(props) {
-  const { dashboard } = props;
+  const { stats } = props;
 
-  const operationsData = [
-    {
-      name: 'Find', total_count: dashboard.find.totalCount,
-    },
-    {
-      name: 'Insert', total_count: dashboard.insert.totalCount,
-    },
-    {
-      name: 'Update', total_count: dashboard.update.totalCount,
-    },
-    {
-      name: 'Distinct', total_count: dashboard.distinct.totalCount,
-    },
-    {
-      name: 'Delete', total_count: dashboard.delete.totalCount,
-    },
-    {
-      name: 'Agg', total_count: dashboard.aggregate.totalCount,
-    },
-    {
-      name: 'Count', total_count: dashboard.count.totalCount,
-    },
-    {
-      name: 'GetMore', total_count: dashboard.getMore.totalCount,
-    },
-  ];
+  const operationsData = stats.map(stat => ({name: stat.name, total_count: stat.totalCount}))
+  // const operationsData = [
+  //   {
+  //     name: 'Find', total_count: stats.find.totalCount,
+  //   },
+  //   {
+  //     name: 'Insert', total_count: stats.insert.totalCount,
+  //   },
+  //   {
+  //     name: 'Update', total_count: stats.update.totalCount,
+  //   },
+  //   {
+  //     name: 'Distinct', total_count: stats.distinct.totalCount,
+  //   },
+  //   {
+  //     name: 'Delete', total_count: stats.delete.totalCount,
+  //   },
+  //   {
+  //     name: 'Agg', total_count: stats.aggregate.totalCount,
+  //   },
+  //   {
+  //     name: 'Count', total_count: stats.count.totalCount,
+  //   },
+  //   {
+  //     name: 'GetMore', total_count: stats.getMore.totalCount,
+  //   },
+  // ];
 
-  const durationsData = [
-    {
-      name: 'Find', max_duration: dashboard.find.maxDuration,
-    },
-    {
-      name: 'Insert', max_duration: dashboard.insert.maxDuration,
-    },
-    {
-      name: 'Update', max_duration: dashboard.update.maxDuration,
-    },
-    {
-      name: 'Distinct', max_duration: dashboard.distinct.maxDuration,
-    },
-    {
-      name: 'Delete', max_duration: dashboard.delete.maxDuration,
-    },
-    {
-      name: 'Agg', max_duration: dashboard.aggregate.maxDuration,
-    },
-    {
-      name: 'Count', max_duration: dashboard.count.maxDuration,
-    },
-    {
-      name: 'GetMore', max_duration: dashboard.getMore.maxDuration,
-    },
-  ];
+  const durationsData = stats.map(stat => ({name: stat.name, max_duration: stat.maxDuration}))
+  // const durationsData = [
+  //   {
+  //     name: 'Find', max_duration: stats.find.maxDuration,
+  //   },
+  //   {
+  //     name: 'Insert', max_duration: stats.insert.maxDuration,
+  //   },
+  //   {
+  //     name: 'Update', max_duration: stats.update.maxDuration,
+  //   },
+  //   {
+  //     name: 'Distinct', max_duration: stats.distinct.maxDuration,
+  //   },
+  //   {
+  //     name: 'Delete', max_duration: stats.delete.maxDuration,
+  //   },
+  //   {
+  //     name: 'Agg', max_duration: stats.aggregate.maxDuration,
+  //   },
+  //   {
+  //     name: 'Count', max_duration: stats.count.maxDuration,
+  //   },
+  //   {
+  //     name: 'GetMore', max_duration: stats.getMore.maxDuration,
+  //   },
+  // ];
   return (
     <div className="flex flex-wrap mt-10 charts">
       <div className="w-1/2 pt-3 pr-3">

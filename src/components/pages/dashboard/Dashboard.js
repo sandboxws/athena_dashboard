@@ -22,8 +22,8 @@ export default class Dashboard extends Component {
             const dashboard = data.dashboard;
             return (
               <>
-                <Stats dashboard={dashboard} />
-                <Charts dashboard={dashboard} />
+                <Stats stats={dashboard.stats} />
+                <Charts stats={dashboard.stats} />
                 <hr className="mt-2 border-b-1 border-gray-200 mt-10 mb-5" />
                 <LatestLogs mongodbLatestLogs={dashboard.mongodbLatestLogs} />
                 <LatestControllers mongodbLatestControllers={dashboard.mongodbLatestControllers} />

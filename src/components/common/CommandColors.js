@@ -6,7 +6,7 @@ export default function operationColor(operation) {
     'distinct': 'yellow',
     'delete': 'red',
     'aggregate': 'blue',
-    'count': 'violet',
+    'count': 'indigo',
     'getMore': 'pink',
   }
   return colors[operation];
