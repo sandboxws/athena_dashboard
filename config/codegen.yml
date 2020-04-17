@@ -1,0 +1,24 @@
+overwrite: true
+schema: "http://localhost:3030/graphql"
+documents: "src/queries/**/*.ts"
+generates:
+  # generated/graphql.ts:
+  #   plugins:
+  #     - "typescript"
+  #     - "typescript-operations"
+  #     - "typescript-resolvers"
+  # generated/schema.d.ts:
+  #   plugins:
+  #     - "typescript-graphql-files-modules"
+  src/generated/graphql.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+    config:
+      withHooks: true
+      preResolveTypes: true
+      avoidOptionals: true
+      typesPrefix: I
+      # withResultType: false
+      # reactApolloVersion: 3
