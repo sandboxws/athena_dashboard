@@ -21,6 +21,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+/.history/
 
 
 # Created by https://www.gitignore.io/api/vim,node,linux,macos,emacs,windows,webstorm,visualstudiocode

@@ -1,0 +1,26 @@
+.sortable {
+  ul {
+    display: inline;
+    li {
+      list-style-type: none;
+      display: inline;
+    }
+  }
+
+  svg,
+  i.icon {
+    opacity: 35%;
+  }
+
+  svg {
+    opacity: 35%;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+  svg:hover,
+  i.icon:hover {
+    cursor: pointer;
+    opacity: 100%;
+  }
+}
