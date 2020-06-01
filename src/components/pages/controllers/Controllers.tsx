@@ -45,6 +45,7 @@ export default function Controllers() {
       limit: 25,
       names: state.selectedNames as string[],
     },
+    fetchPolicy: "cache-and-network",
   });
   if (loading) return <div>Fetching data</div>;
   if (error) return <div>Error: {error}</div>;

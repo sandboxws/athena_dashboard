@@ -7,10 +7,11 @@ import {
 } from "semantic-ui-react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import syntaxStyle from "react-syntax-highlighter/dist/esm/styles/hljs/tomorrow-night-blue";
+import voca from "voca";
 
 type Props = {
   title?: string;
-  excerpt: string | null;
+  excerpt: string | undefined;
   jsonContent: string;
 };
 
@@ -49,7 +50,7 @@ export default function AwesomeAccordion(props: Props) {
           onClick={handleClick}
         >
           <Icon name="dropdown" />
-          {excerpt}
+          {voca.truncate(excerpt, 99)}
         </Accordion.Title>
         <Accordion.Content active={activeIndex === 0}>
           <SyntaxHighlighter

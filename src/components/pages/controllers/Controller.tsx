@@ -6,40 +6,39 @@ import operationColor from "../../common/CommandColors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AwesomeAccordion from "../../common/AwesomeAccordion";
 import AwesomeLogs from "../../common/AwesomeLogs";
+import { useParams } from "react-router-dom";
+import ApolloMessage from "../../common/ApolloMessage";
 
-type Props = {
-  match: {
-    params: {
-      id: string;
-    };
-  };
-};
-
-export default function Controller(props: Props) {
-  const {
-    match: { params },
-  } = props;
-
-  const id = parseInt(params.id);
+export default function Controller() {
+  let { id } = useParams();
+  id = parseInt(id);
 
   const { loading, error, data } = useMongoDbControllerQuery({
     variables: {
       id: id,
     },
   });
-  if (loading) return <div>Fetching data</div>;
-  if (error) return <div>Error: {error}</div>;
+
+  if (loading || error)
+    return <ApolloMessage loading={loading} error={error} />;
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const controller = data?.mongodbController!;
 
   return (
     <>
-      <h1 className="text-2xl text-gray-700 pb-0 mb-0">{`Controller #${params.id}`}</h1>
+      <h1 className="text-2xl text-gray-700 pb-0 mb-0">{`Controller #${id}`}</h1>
       <p className="mt-1 max-w-2xl text-base leading-5 text-gray-600">
         {`${controller.name}#${controller.action}`}
       </p>
       <div>
+        {controller.collscans > 0 ? (
+          <Label color="red" horizontal>
+            COLLSCAN
+          </Label>
+        ) : (
+          ""
+        )}
         <Label color={controller.logsCount >= 100 ? "red" : "green"} horizontal>
           Queries
           <Label.Detail>

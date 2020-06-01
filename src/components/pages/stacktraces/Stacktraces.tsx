@@ -36,6 +36,7 @@ export default function Stacktraces() {
       page: state.activePage as number,
       limit: 25,
     },
+    fetchPolicy: "cache-and-network",
   });
   if (loading) return <div>Fetching data</div>;
   if (error) return <div>Error: {error}</div>;

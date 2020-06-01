@@ -17,7 +17,7 @@ export type Scalars = {
 };
 
 export type ICollectionStats = {
-   __typename?: 'CollectionStats';
+  __typename?: 'CollectionStats';
   /** Collection name */
   name: Scalars['String'];
   /** Collection stats */
@@ -26,7 +26,7 @@ export type ICollectionStats = {
 
 /** MongoDB Command */
 export type ICommand = {
-   __typename?: 'Command';
+  __typename?: 'Command';
   /** MongoDB command max execution duration */
   maxDuration: Scalars['Float'];
   /** MongoDB command name */
@@ -37,7 +37,7 @@ export type ICommand = {
 
 /** MongoDB Query Controller */
 export type IController = {
-   __typename?: 'Controller';
+  __typename?: 'Controller';
   /** Rails controller action */
   action: Scalars['String'];
   /** Controller stats */
@@ -71,7 +71,7 @@ export type IController = {
 };
 
 export type IControllers = IPageable & {
-   __typename?: 'Controllers';
+  __typename?: 'Controllers';
   currentPage: Maybe<Scalars['Int']>;
   firstPage: Maybe<Scalars['Boolean']>;
   lastPage: Maybe<Scalars['Boolean']>;
@@ -85,7 +85,7 @@ export type IControllers = IPageable & {
 
 /** MongoDB Dashboard */
 export type IDashboard = {
-   __typename?: 'Dashboard';
+  __typename?: 'Dashboard';
   latestSidekiqWorkers: Maybe<Array<ISidekiqWorker>>;
   mongodbLatestControllers: Maybe<Array<IController>>;
   mongodbLatestLogs: Array<ILog>;
@@ -116,7 +116,7 @@ export type IDashboardMongodbLatestLogsArgs = {
 
 /** MongoDB Query Explain */
 export type IExplain = {
-   __typename?: 'Explain';
+  __typename?: 'Explain';
   /** Collection name */
   collection: Scalars['String'];
   /** A COLLSCAN flag */
@@ -165,7 +165,7 @@ export type IExplain = {
 
 /** MongoDB Query GlobalStats */
 export type IGlobalStats = {
-   __typename?: 'GlobalStats';
+  __typename?: 'GlobalStats';
   /** List of queries collections */
   collections: Array<Scalars['String']>;
   /** List of MongoDB operations */
@@ -174,7 +174,7 @@ export type IGlobalStats = {
 
 /** MongoDB Query Log */
 export type ILog = {
-   __typename?: 'Log';
+  __typename?: 'Log';
   /** The originating app */
   appName: Scalars['String'];
   /** Collection name */
@@ -214,7 +214,7 @@ export type ILog = {
 };
 
 export type ILogs = IPageable & {
-   __typename?: 'Logs';
+  __typename?: 'Logs';
   currentPage: Maybe<Scalars['Int']>;
   firstPage: Maybe<Scalars['Boolean']>;
   lastPage: Maybe<Scalars['Boolean']>;
@@ -228,7 +228,7 @@ export type ILogs = IPageable & {
 
 /** MongoDB Query Logs */
 export type ILogsWithStats = {
-   __typename?: 'LogsWithStats';
+  __typename?: 'LogsWithStats';
   /** MongoDB collections list */
   collections: Array<Scalars['String']>;
   /** MongoDB collection stats */
@@ -245,7 +245,7 @@ export type ILogsWithStats = {
 };
 
 export type IMutation = {
-   __typename?: 'Mutation';
+  __typename?: 'Mutation';
   /** An example field added by the generator */
   testField: Scalars['String'];
 };
@@ -262,7 +262,7 @@ export type IPageable = {
 };
 
 export type IQuery = {
-   __typename?: 'Query';
+  __typename?: 'Query';
   dashboard: IDashboard;
   globalStats: IGlobalStats;
   logsWithStats: ILogsWithStats;
@@ -360,7 +360,7 @@ export type IQuerySidekiqWorkersWithStatsArgs = {
 
 /** Sidekiq Job */
 export type ISidekiqWorker = {
-   __typename?: 'SidekiqWorker';
+  __typename?: 'SidekiqWorker';
   /** Average duration for a queries originating from this sidekiq worker */
   avgDuration: Scalars['Float'];
   /** Collections stats */
@@ -394,7 +394,7 @@ export type ISidekiqWorker = {
 };
 
 export type ISidekiqWorkers = IPageable & {
-   __typename?: 'SidekiqWorkers';
+  __typename?: 'SidekiqWorkers';
   currentPage: Maybe<Scalars['Int']>;
   firstPage: Maybe<Scalars['Boolean']>;
   lastPage: Maybe<Scalars['Boolean']>;
@@ -408,7 +408,7 @@ export type ISidekiqWorkers = IPageable & {
 
 /** Sidekiq Workers with Stats */
 export type ISidekiqWorkersWithStats = {
-   __typename?: 'SidekiqWorkersWithStats';
+  __typename?: 'SidekiqWorkersWithStats';
   /** Total number of queries */
   queriesCount: Scalars['Int'];
   /** Sidekiq queues list */
@@ -426,7 +426,7 @@ export type ISidekiqWorkersWithStats = {
 
 /** MongoDB Query Stacktrace */
 export type IStacktrace = {
-   __typename?: 'Stacktrace';
+  __typename?: 'Stacktrace';
   /** Average duration for a query originating from this stacktrace */
   avgDuration: Maybe<Scalars['Float']>;
   /** Timestamp in UTC */
@@ -452,7 +452,7 @@ export type IStacktrace = {
 };
 
 export type IStacktraces = IPageable & {
-   __typename?: 'Stacktraces';
+  __typename?: 'Stacktraces';
   currentPage: Maybe<Scalars['Int']>;
   firstPage: Maybe<Scalars['Boolean']>;
   lastPage: Maybe<Scalars['Boolean']>;
@@ -465,7 +465,7 @@ export type IStacktraces = IPageable & {
 };
 
 export type IStat = {
-   __typename?: 'Stat';
+  __typename?: 'Stat';
   /** Stat name */
   name: Scalars['String'];
   /** Stat value */

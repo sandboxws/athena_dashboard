@@ -4,6 +4,7 @@ import { useMongodbStacktraceQuery } from "../../../generated/graphql";
 import AwesomeLogs from "../../common/AwesomeLogs";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import syntaxStyle from "react-syntax-highlighter/dist/esm/styles/hljs/tomorrow-night-blue";
+import ApolloMessage from "../../common/ApolloMessage";
 
 type Props = {
   match: {
@@ -25,8 +26,8 @@ export default function Stacktrace(props: Props) {
       id: id,
     },
   });
-  if (loading) return <div>Fetching data</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading || error)
+    return <ApolloMessage loading={loading} error={error} />;
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const stacktrace = data?.mongodbStacktrace!;

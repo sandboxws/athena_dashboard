@@ -13,11 +13,14 @@ import {
   IController,
   ISidekiqWorker,
 } from "../../../generated/graphql";
+import ApolloMessage from "../../common/ApolloMessage";
 
 export default function Dashboard() {
-  const { loading, error, data } = useDashboardQueryQuery();
-  if (loading) return <div>Loading…</div>;
-  if (error) return <div>Error: {error}</div>;
+  const { loading, error, data } = useDashboardQueryQuery({
+    fetchPolicy: "cache-and-network",
+  });
+  if (loading || error)
+    return <ApolloMessage loading={loading} error={error} />;
   const dashboard = data?.dashboard;
   const mongodbLatestLogs = dashboard?.mongodbLatestLogs as ILog[];
   const operationsStats = dashboard?.operationsStats as ICommand[];

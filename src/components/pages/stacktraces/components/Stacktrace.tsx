@@ -23,7 +23,7 @@ export default function Controller(props: Props) {
     <Table.Row verticalAlign="middle">
       <Table.Cell>
         <AwesomeAccordion
-          excerpt={stacktraceExcerpt}
+          excerpt={stacktraceExcerpt || undefined}
           jsonContent={stacktrace}
         />
       </Table.Cell>

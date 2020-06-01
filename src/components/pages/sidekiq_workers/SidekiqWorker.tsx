@@ -6,6 +6,7 @@ import operationColor from "../../common/CommandColors";
 import { useSidekiqWorkerQuery, IStat } from "../../../generated/graphql";
 import AwesomeAccordion from "../../common/AwesomeAccordion";
 import AwesomeLogs from "../../common/AwesomeLogs";
+import ApolloMessage from "../../common/ApolloMessage";
 
 type Props = {
   match: {
@@ -25,8 +26,8 @@ export default function SidekiqWorker(props: Props) {
   const { loading, error, data } = useSidekiqWorkerQuery({
     variables: { id: id },
   });
-  if (loading) return <div>Fetching data</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading || error)
+    return <ApolloMessage loading={loading} error={error} />;
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const sidekiqWorker = data?.sidekiqWorker!;

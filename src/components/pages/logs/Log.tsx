@@ -9,6 +9,7 @@ import { TreevizReact } from "treeviz-react";
 import SidekiqLogo from "../../../assets/icons/sidekiq.svg";
 import "./logs.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ApolloMessage from "../../common/ApolloMessage";
 
 type Props = {
   match: {
@@ -34,8 +35,8 @@ export default function Log(props: Props) {
       id: parseInt(params.id),
     },
   });
-  if (loading) return <div>Fetching data</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading || error)
+    return <ApolloMessage loading={loading} error={error} />;
 
   const log = data?.mongodbLog!;
   const explain = log.explain!;
@@ -44,6 +45,14 @@ export default function Log(props: Props) {
   return (
     <>
       <PageTitle title={`Query #${params.id}`} />
+      {log.collscan ? (
+        <Label color="red" horizontal>
+          COLLSCAN
+        </Label>
+      ) : (
+        ""
+      )}
+
       {log.sourceName === "server" ? (
         <Label horizontal>
           <FontAwesomeIcon icon="server" className="mr-1" />
@@ -94,21 +103,17 @@ export default function Log(props: Props) {
             </Table.Cell>
             <Table.Cell className="font-medium">Documents Examined</Table.Cell>
             <Table.Cell>
-              <Label horizontal>
-                {log?.explain?.documentsExamined || "N/A"}
-              </Label>
+              <Label horizontal>{log?.explain?.documentsExamined || 0}</Label>
             </Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell className="font-medium">Documents Returned</Table.Cell>
             <Table.Cell>
-              <Label horizontal>
-                {log?.explain?.documentsReturned || "N/A"}
-              </Label>
+              <Label horizontal>{log?.explain?.documentsReturned || 0}</Label>
             </Table.Cell>
             <Table.Cell className="font-medium">Keys Examined</Table.Cell>
             <Table.Cell>
-              <Label horizontal>{log?.explain?.keysExamined || "N/A"}</Label>
+              <Label horizontal>{log?.explain?.keysExamined || 0}</Label>
             </Table.Cell>
             <Table.Cell className="font-medium">Rejected Plans</Table.Cell>
             <Table.Cell>
@@ -118,7 +123,7 @@ export default function Log(props: Props) {
                   (log?.explain?.rejectedPlans || 0) >= 5 ? "red" : undefined
                 }
               >
-                {log?.explain?.rejectedPlans || "N/A"}
+                {log?.explain?.rejectedPlans || 0}
               </Label>
             </Table.Cell>
             <Table.Cell className="font-medium">Stages Count</Table.Cell>

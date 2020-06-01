@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Table } from "semantic-ui-react";
 import { IController } from "../../../../generated/graphql";
 import { Link } from "react-router-dom";
+import voca from "voca";
 
 interface Props {
   controller: IController;
@@ -22,7 +23,7 @@ export default function Controller(props: Props) {
     <Table.Row verticalAlign="middle">
       <Table.Cell>{name}</Table.Cell>
       <Table.Cell>{action}</Table.Cell>
-      <Table.Cell>{path}</Table.Cell>
+      <Table.Cell>{voca.truncate(path, 99)}</Table.Cell>
       <Table.Cell>{logsCount}</Table.Cell>
       <Table.Cell>{totalDuration}s</Table.Cell>
       <Table.Cell>{createdAt}</Table.Cell>

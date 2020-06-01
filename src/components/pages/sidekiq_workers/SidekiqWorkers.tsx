@@ -48,6 +48,7 @@ export default function SidekiqWorkers() {
       queues: state.selectedQueues as string[],
       mode: "aggregate",
     },
+    fetchPolicy: "cache-and-network",
   });
   if (loading) return <div>Fetching data</div>;
   if (error) return <div>Error: {error}</div>;
