@@ -41,9 +41,9 @@ export default function Stacktraces() {
   if (loading) return <div>Fetching data</div>;
   if (error) return <div>Error: {error}</div>;
 
-  const mongodbStacktraces = data?.mongodbStacktraces;
-  const stacktraces = mongodbStacktraces?.nodes as IStacktrace[];
-  const totalPages = mongodbStacktraces?.totalPages || 0;
+  const awesomeStacktraces = data?.stacktraces;
+  const stacktraces = awesomeStacktraces?.nodes as IStacktrace[];
+  const totalPages = awesomeStacktraces?.totalPages || 0;
 
   const handlePaginationChange = (
     _e: SyntheticEvent,

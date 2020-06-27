@@ -80,80 +80,86 @@ export default function AwesomeLogs(props: Props) {
 
   return (
     <>
-      <Divider horizontal>Queries</Divider>
-      <DropdownFilter
-        state={state}
-        setState={setState}
-        type="collections"
-        items={collections}
-        selectedItems={state.selectedCollections}
-        selectedItemsName="selectedCollections"
-      />
+      {logs.length > 0 ? (
+        <>
+          <Divider horizontal>MongoDB Queries</Divider>
+          <DropdownFilter
+            state={state}
+            setState={setState}
+            type="collections"
+            items={collections}
+            selectedItems={state.selectedCollections}
+            selectedItemsName="selectedCollections"
+          />
 
-      <DropdownFilter
-        state={state}
-        setState={setState}
-        type="operations"
-        items={operations}
-        selectedItems={state.selectedOperations}
-        selectedItemsName="selectedOperations"
-      />
+          <DropdownFilter
+            state={state}
+            setState={setState}
+            type="operations"
+            items={operations}
+            selectedItems={state.selectedOperations}
+            selectedItemsName="selectedOperations"
+          />
 
-      <DropdownFilter
-        state={state}
-        setState={setState}
-        type="sources"
-        items={sourceNames}
-        selectedItems={state.selectedSourceNames}
-        selectedItemsName="selectedSourceNames"
-      />
+          <DropdownFilter
+            state={state}
+            setState={setState}
+            type="sources"
+            items={sourceNames}
+            selectedItems={state.selectedSourceNames}
+            selectedItemsName="selectedSourceNames"
+          />
 
-      <Button
-        size="mini"
-        className="float-right"
-        color="black"
-        onClick={() => {
-          setState({
-            ...state,
-            selectedCollections: [],
-            selectedOperations: [],
-            selectedSourceNames: [],
-          });
-        }}
-      >
-        Clear Filters
-      </Button>
+          <Button
+            size="mini"
+            className="float-right"
+            color="black"
+            onClick={() => {
+              setState({
+                ...state,
+                selectedCollections: [],
+                selectedOperations: [],
+                selectedSourceNames: [],
+              });
+            }}
+          >
+            Clear Filters
+          </Button>
 
-      <Table celled striped sortable>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>Collection</Table.HeaderCell>
-            <Table.HeaderCell>Operation</Table.HeaderCell>
-            <Table.HeaderCell>Command</Table.HeaderCell>
-            <Table.HeaderCell>Duration</Table.HeaderCell>
-            <Table.HeaderCell width="one">Action</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
+          <Table celled striped sortable>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>Collection</Table.HeaderCell>
+                <Table.HeaderCell>Operation</Table.HeaderCell>
+                <Table.HeaderCell>Command</Table.HeaderCell>
+                <Table.HeaderCell>Duration</Table.HeaderCell>
+                <Table.HeaderCell width="one">Action</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
 
-        <Table.Body>
-          {logs?.map((log) => (
-            <Log key={log.id} log={log as ILog} />
-          ))}
-        </Table.Body>
-        <Table.Footer>
-          <Table.Row>
-            <Table.HeaderCell colSpan="5">
-              <Pagination
-                floated="right"
-                activePage={state.activePage}
-                onPageChange={handlePaginationChange}
-                size="mini"
-                totalPages={totalPages || 0}
-              />
-            </Table.HeaderCell>
-          </Table.Row>
-        </Table.Footer>
-      </Table>
+            <Table.Body>
+              {logs?.map((log) => (
+                <Log key={log.id} log={log as ILog} />
+              ))}
+            </Table.Body>
+            <Table.Footer>
+              <Table.Row>
+                <Table.HeaderCell colSpan="5">
+                  <Pagination
+                    floated="right"
+                    activePage={state.activePage}
+                    onPageChange={handlePaginationChange}
+                    size="mini"
+                    totalPages={totalPages || 0}
+                  />
+                </Table.HeaderCell>
+              </Table.Row>
+            </Table.Footer>
+          </Table>
+        </>
+      ) : (
+        ""
+      )}
     </>
   );
 }

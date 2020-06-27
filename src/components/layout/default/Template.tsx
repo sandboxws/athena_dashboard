@@ -7,6 +7,8 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import TopMenu from "./TopMenu";
 import Dashboard from "../../pages/dashboard/Dashboard";
 import Logs from "../../pages/logs/Logs";
+import SqlQueries from "../../pages/sql_queries/SqlQueries";
+import SqlQuery from "../../pages/sql_queries/SqlQuery";
 import Log from "../../pages/logs/Log";
 import Controllers from "../../pages/controllers/Controllers";
 import Controller from "../../pages/controllers/Controller";
@@ -23,6 +25,8 @@ function Template() {
         <TopMenu />
         <Container className="ae-wide p-5 my-0 bg-white shadow rounded-md mb-10">
           <Route exact path="/" component={Dashboard} />
+          <Route exact path="/sql_queries" component={SqlQueries} />
+          <Route exact path="/sql_queries/:id" component={SqlQuery} />
           <Route exact path="/queries" component={Logs} />
           <Route exact path="/queries/:id" component={Log} />
           <Route exact path="/controllers" component={Controllers} />

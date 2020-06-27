@@ -10,7 +10,7 @@ import PageTitle from "../../common/PageTitle";
 import { Dropdown } from "semantic-ui-react";
 import {
   useLatestControllersQuery,
-  IController,
+  IAwesomeController,
 } from "../../../generated/graphql";
 import Controller from "./components/Controller";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -50,8 +50,8 @@ export default function Controllers() {
   if (loading) return <div>Fetching data</div>;
   if (error) return <div>Error: {error}</div>;
 
-  const mongodbControllers = data?.mongodbControllers;
-  const controllers = mongodbControllers?.nodes as IController[];
+  const mongodbControllers = data?.controllers;
+  const controllers = mongodbControllers?.nodes as IAwesomeController[];
   const totalPages = mongodbControllers?.totalPages || 0;
   const names: string[] = []; // controllersWithStats?.collections
 

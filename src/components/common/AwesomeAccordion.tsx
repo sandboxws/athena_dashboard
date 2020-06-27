@@ -8,11 +8,13 @@ import {
 import SyntaxHighlighter from "react-syntax-highlighter";
 import syntaxStyle from "react-syntax-highlighter/dist/esm/styles/hljs/tomorrow-night-blue";
 import voca from "voca";
+import sqlFormatter from "sql-formatter";
 
 type Props = {
   title?: string;
   excerpt: string | undefined;
-  jsonContent: string;
+  jsonContent?: string | undefined;
+  sqlContent?: string | undefined;
 };
 
 type State = {
@@ -24,7 +26,7 @@ const initialState = {
 } as State;
 
 export default function AwesomeAccordion(props: Props) {
-  const { jsonContent, title, excerpt } = props;
+  const { jsonContent, title, excerpt, sqlContent } = props;
   const [state, setState] = useState(initialState);
 
   const { activeIndex } = state;
@@ -35,6 +37,9 @@ export default function AwesomeAccordion(props: Props) {
     const newIndex = activeIndex === index ? -1 : (index as number);
     setState({ activeIndex: newIndex });
   };
+
+  const formattedSql =
+    sqlContent !== undefined ? sqlFormatter.format(sqlContent) : sqlContent;
 
   return (
     <>
@@ -54,12 +59,14 @@ export default function AwesomeAccordion(props: Props) {
         </Accordion.Title>
         <Accordion.Content active={activeIndex === 0}>
           <SyntaxHighlighter
-            language="json"
+            language={jsonContent !== undefined ? "json" : "sql"}
             className="border border-gray-300 rounded-lg"
             style={syntaxStyle}
             wrapLines={false}
           >
-            {JSON.stringify(JSON.parse(jsonContent), null, 2)}
+            {jsonContent !== undefined
+              ? JSON.stringify(JSON.parse(jsonContent), null, 2)
+              : formattedSql}
           </SyntaxHighlighter>
         </Accordion.Content>
       </Accordion>

@@ -17,7 +17,16 @@ export default function Controller(props: Props) {
     minDuration,
     maxDuration,
     avgDuration,
+    sqlQueriesCount,
+    sqlQueriesMinDuration,
+    sqlQueriesMaxDuration,
+    sqlQueriesAvgDuration,
   } = props.stacktrace;
+
+  const queriesCount = (logsCount || 0) + (sqlQueriesCount || 0);
+  const minDurations = (minDuration || 0) + (sqlQueriesMinDuration || 0);
+  const maxDurations = (maxDuration || 0) + (sqlQueriesMaxDuration || 0);
+  const avgDurations = (avgDuration || 0) + (sqlQueriesAvgDuration || 0);
 
   return (
     <Table.Row verticalAlign="middle">
@@ -27,10 +36,10 @@ export default function Controller(props: Props) {
           jsonContent={stacktrace}
         />
       </Table.Cell>
-      <Table.Cell>{logsCount}</Table.Cell>
-      <Table.Cell>{minDuration}s</Table.Cell>
-      <Table.Cell>{maxDuration}s</Table.Cell>
-      <Table.Cell>{avgDuration}s</Table.Cell>
+      <Table.Cell>{queriesCount}</Table.Cell>
+      <Table.Cell>{minDurations}s</Table.Cell>
+      <Table.Cell>{maxDurations}s</Table.Cell>
+      <Table.Cell>{avgDurations}s</Table.Cell>
       <Table.Cell>
         <Button as={Link} size="mini" color="blue" to={`/stacktraces/${id}`}>
           Inspect
