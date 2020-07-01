@@ -32,7 +32,7 @@ export default function Log(props: Props) {
       </Table.Cell>
       <Table.Cell>{(duration / 1000).toFixed(5)}s</Table.Cell>
       <Table.Cell>
-        <Button as={Link} size="mini" color="blue" to={`/queries/${id}`}>
+        <Button as={Link} size="mini" color="blue" to={`/sql_queries/${id}`}>
           Inspect
         </Button>
       </Table.Cell>

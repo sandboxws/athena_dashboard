@@ -125,9 +125,18 @@ export const SHOW_SQL_QUERY_GQL = gql`
         id
         stacktrace
       }
-      explain {
+      sqlExplain {
         id
-        explainOutput
+        treeviz
+        startupCost
+        totalCost
+        rows
+        width
+        actualStartupTime
+        actualTotalTime
+        actualRows
+        actualLoops
+        seqScans
       }
       controller {
         id

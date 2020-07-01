@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import React from "react";
+import React, { useState } from "react";
 import PageTitle from "../../common/PageTitle";
 import { Label, Table, Divider } from "semantic-ui-react";
 import SyntaxHighlighter from "react-syntax-highlighter";
@@ -9,6 +9,7 @@ import SidekiqLogo from "../../../assets/icons/sidekiq.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ApolloMessage from "../../common/ApolloMessage";
 import AwesomeAccordion from "../../common/AwesomeAccordion";
+import { TreevizReact } from "treeviz-react";
 
 type Props = {
   match: {
@@ -19,6 +20,8 @@ type Props = {
 };
 
 export default function SqlQuery(props: Props) {
+  const [isToggled, setToggled] = useState(true);
+
   const {
     match: { params },
   } = props;
@@ -32,7 +35,8 @@ export default function SqlQuery(props: Props) {
     return <ApolloMessage loading={loading} error={error} />;
 
   const sqlQuery = data?.sqlQuery!;
-  const explain = sqlQuery.explain!;
+  const sqlExplain = sqlQuery.sqlExplain!;
+  const treeData = sqlExplain !== null ? JSON.parse(sqlExplain.treeviz!) : "";
 
   return (
     <>
@@ -92,28 +96,39 @@ export default function SqlQuery(props: Props) {
             </Table.Cell>
           </Table.Row>
           <Table.Row>
-            <Table.Cell className="font-medium">Documents Returned</Table.Cell>
+            <Table.Cell className="font-medium">Startup Cost</Table.Cell>
             <Table.Cell>
-              {/* <Label horizontal>{log?.explain?.documentsReturned || 0}</Label> */}
+              <Label horizontal>{sqlExplain?.startupCost || 0}</Label>
             </Table.Cell>
-            <Table.Cell className="font-medium">Keys Examined</Table.Cell>
+            <Table.Cell className="font-medium">Total Cost</Table.Cell>
             <Table.Cell>
-              {/* <Label horizontal>{log?.explain?.keysExamined || 0}</Label> */}
+              <Label horizontal>{sqlExplain?.totalCost || 0}</Label>
             </Table.Cell>
-            <Table.Cell className="font-medium">Rejected Plans</Table.Cell>
+            <Table.Cell className="font-medium">Rows</Table.Cell>
             <Table.Cell>
-              {/* <Label
-                horizontal
-                color={
-                  (log?.explain?.rejectedPlans || 0) >= 5 ? "red" : undefined
-                }
-              >
-                {log?.explain?.rejectedPlans || 0}
-              </Label> */}
+              <Label horizontal>{sqlExplain?.rows || 0}</Label>
             </Table.Cell>
-            <Table.Cell className="font-medium">Stages Count</Table.Cell>
+            <Table.Cell className="font-medium">Actual Startup Time</Table.Cell>
             <Table.Cell>
-              {/* <Label horizontal>{log?.explain?.stagesCount || "N/A"}</Label> */}
+              <Label horizontal>{sqlExplain?.actualStartupTime || 0}</Label>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell className="font-medium">Actual Total Time</Table.Cell>
+            <Table.Cell>
+              <Label horizontal>{sqlExplain?.actualTotalTime || 0}</Label>
+            </Table.Cell>
+            <Table.Cell className="font-medium">Actual Rows</Table.Cell>
+            <Table.Cell>
+              <Label horizontal>{sqlExplain?.actualRows || 0}</Label>
+            </Table.Cell>
+            <Table.Cell className="font-medium">Actual Loops</Table.Cell>
+            <Table.Cell>
+              <Label horizontal>{sqlExplain?.actualLoops || 0}</Label>
+            </Table.Cell>
+            <Table.Cell className="font-medium">Seq Scans</Table.Cell>
+            <Table.Cell>
+              <Label horizontal>{sqlExplain?.seqScans}</Label>
             </Table.Cell>
           </Table.Row>
         </Table.Body>
@@ -134,6 +149,41 @@ export default function SqlQuery(props: Props) {
       >
         {JSON.stringify(JSON.parse(sqlQuery?.stacktrace.stacktrace!), null, 2)}
       </SyntaxHighlighter>
+      {treeData != "" ? (
+        <>
+          <Divider horizontal>Query Plan</Divider>
+          <div className="overflow-y-auto">
+            <TreevizReact
+              data={treeData}
+              areaWidth={1250}
+              areaHeight={700}
+              idKey={"id"}
+              hasFlatData={true}
+              relationnalField={"father"}
+              nodeHeight={230}
+              mainAxisNodeSpacing={3.5}
+              hasPan={true}
+              hasZoom={false}
+              linkColor={() => "#B0BEC5"}
+              secondaryAxisNodeSpacing={4}
+              isHorizontal={false}
+              onNodeClick={() => setToggled(isToggled ? false : true)}
+              renderNode={(
+                node: any
+              ) => `<div class='break-words overflow-y-auto text-sm py-2 px-4 text-gray-800 border w-56 border-gray-400 rounded-sm shadow' style='cursor:pointer;height:${node.settings.nodeHeight}px;width:250px;display:flex;flex-direction:column;justify-content:left;align-items:left;background-color:
+        ${node.data.color}
+      ;border-radius:5px;'><div><span class='font-semibold text-base border-b-1 border-gray-200 border-b-2 block'>
+  ${node.data.text_1}
+  </span></div><div></div><div><i>
+  ${node.data.text_2}</i></div></div>`}
+              linkShape="curve"
+              linkWidth={() => 2}
+            />
+          </div>
+        </>
+      ) : (
+        ""
+      )}
     </>
   );
 }

@@ -493,6 +493,14 @@ export type ISidekiqWorkersWithStats = {
 /** SQL Query Explain */
 export type ISqlExplain = {
   __typename?: 'SqlExplain';
+  /** Total actual loops */
+  actualLoops: Scalars['Float'];
+  /** Total actual rows */
+  actualRows: Scalars['Float'];
+  /** Total actual startup time */
+  actualStartupTime: Scalars['Float'];
+  /** Total actual total time */
+  actualTotalTime: Scalars['Float'];
   /** Rails controller */
   controller: Maybe<IController>;
   /** Timestamp in UTC */
@@ -501,14 +509,26 @@ export type ISqlExplain = {
   explainOutput: Scalars['String'];
   /** SQL Query primary key */
   id: Scalars['ID'];
+  /** Total Rows */
+  rows: Scalars['Float'];
+  /** Seq Scans performed under any plan */
+  seqScans: Scalars['Int'];
   /** A unique id identifying a session during which queries are logged. */
   sessionId: Scalars['String'];
   /** SQL Query log */
   sqlQuery: ISqlQuery;
   /** Rails Stacktrace */
   stacktrace: IStacktrace;
+  /** Total Startup Cost */
+  startupCost: Scalars['Float'];
+  /** Total Cost */
+  totalCost: Scalars['Float'];
+  /** SQL's explain as JSON */
+  treeviz: Maybe<Scalars['String']>;
   /** Timestamp in UTC */
   updatedAt: Scalars['DateTime'];
+  /** Total width */
+  width: Scalars['Float'];
 };
 
 export type ISqlQueries = IPageable & {
@@ -553,8 +573,6 @@ export type ISqlQuery = {
   createdAt: Scalars['DateTime'];
   /** Query duration in seconds */
   duration: Scalars['Float'];
-  /** Associated Query Explain */
-  explain: Maybe<ISqlExplain>;
   /** Log primary key */
   id: Scalars['ID'];
   /** The operation performed */
@@ -573,6 +591,8 @@ export type ISqlQuery = {
   sidekiqWorker: Maybe<ISidekiqWorker>;
   /** Source of the query (ex: console, sidekiq, server, …) */
   sourceName: Scalars['String'];
+  /** Associated Query Explain */
+  sqlExplain: Maybe<ISqlExplain>;
   /** Associated Stacktrace */
   stacktrace: IStacktrace;
   /** Table name */
@@ -773,7 +793,7 @@ export type ISqlQueryQueryVariables = {
 };
 
 
-export type ISqlQueryQuery = { __typename?: 'Query', sqlQuery: { __typename?: 'SqlQuery', id: string, tableName: string, schemaName: string, query: string, queryExcerpt: string, operation: string, appName: string, sourceName: string, sidekiqArgs: Maybe<string>, createdAt: any, duration: number, stacktrace: { __typename?: 'Stacktrace', id: string, stacktrace: string }, explain: Maybe<{ __typename?: 'SqlExplain', id: string, explainOutput: string }>, controller: Maybe<{ __typename?: 'AwesomeController', id: string, action: string, path: string, params: string }>, sidekiqWorker: Maybe<{ __typename?: 'SidekiqWorker', id: string, worker: string, queue: string }> } };
+export type ISqlQueryQuery = { __typename?: 'Query', sqlQuery: { __typename?: 'SqlQuery', id: string, tableName: string, schemaName: string, query: string, queryExcerpt: string, operation: string, appName: string, sourceName: string, sidekiqArgs: Maybe<string>, createdAt: any, duration: number, stacktrace: { __typename?: 'Stacktrace', id: string, stacktrace: string }, sqlExplain: Maybe<{ __typename?: 'SqlExplain', id: string, treeviz: Maybe<string>, startupCost: number, totalCost: number, rows: number, width: number, actualStartupTime: number, actualTotalTime: number, actualRows: number, actualLoops: number, seqScans: number }>, controller: Maybe<{ __typename?: 'AwesomeController', id: string, action: string, path: string, params: string }>, sidekiqWorker: Maybe<{ __typename?: 'SidekiqWorker', id: string, worker: string, queue: string }> } };
 
 export type ILatestStacktracesQueryVariables = {
   limit: Maybe<Scalars['Int']>;
@@ -1813,9 +1833,18 @@ export const SqlQueryDocument = gql`
       id
       stacktrace
     }
-    explain {
+    sqlExplain {
       id
-      explainOutput
+      treeviz
+      startupCost
+      totalCost
+      rows
+      width
+      actualStartupTime
+      actualTotalTime
+      actualRows
+      actualLoops
+      seqScans
     }
     controller {
       id
