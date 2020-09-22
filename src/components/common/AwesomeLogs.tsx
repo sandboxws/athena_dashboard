@@ -1,12 +1,6 @@
 import React, { useState, SyntheticEvent } from "react";
 import Log from "../pages/dashboard/components/Log";
-import {
-  Button,
-  Divider,
-  Pagination,
-  PaginationProps,
-  Table,
-} from "semantic-ui-react";
+import { Button, Pagination, PaginationProps, Table } from "semantic-ui-react";
 import { ILog, useLatestLogsWithStatsQuery } from "../../generated/graphql";
 import DropdownFilter from "./DropdownFilter";
 
@@ -82,80 +76,84 @@ export default function AwesomeLogs(props: Props) {
     <>
       {logs.length > 0 ? (
         <>
-          <Divider horizontal>MongoDB Queries</Divider>
-          <DropdownFilter
-            state={state}
-            setState={setState}
-            type="collections"
-            items={collections}
-            selectedItems={state.selectedCollections}
-            selectedItemsName="selectedCollections"
-          />
+          <div className="mt-10 px-5 py-4 bg-white shadow-md rounded-lg">
+            <h3 className="ml-2 m5-2 pb-2 text-purple-500 border-b border-gray-200">
+              MongoDB Queries
+            </h3>
+            <DropdownFilter
+              state={state}
+              setState={setState}
+              type="collections"
+              items={collections}
+              selectedItems={state.selectedCollections}
+              selectedItemsName="selectedCollections"
+            />
 
-          <DropdownFilter
-            state={state}
-            setState={setState}
-            type="operations"
-            items={operations}
-            selectedItems={state.selectedOperations}
-            selectedItemsName="selectedOperations"
-          />
+            <DropdownFilter
+              state={state}
+              setState={setState}
+              type="operations"
+              items={operations}
+              selectedItems={state.selectedOperations}
+              selectedItemsName="selectedOperations"
+            />
 
-          <DropdownFilter
-            state={state}
-            setState={setState}
-            type="sources"
-            items={sourceNames}
-            selectedItems={state.selectedSourceNames}
-            selectedItemsName="selectedSourceNames"
-          />
+            <DropdownFilter
+              state={state}
+              setState={setState}
+              type="sources"
+              items={sourceNames}
+              selectedItems={state.selectedSourceNames}
+              selectedItemsName="selectedSourceNames"
+            />
 
-          <Button
-            size="mini"
-            className="float-right"
-            color="black"
-            onClick={() => {
-              setState({
-                ...state,
-                selectedCollections: [],
-                selectedOperations: [],
-                selectedSourceNames: [],
-              });
-            }}
-          >
-            Clear Filters
-          </Button>
+            <Button
+              size="mini"
+              className="float-right"
+              color="black"
+              onClick={() => {
+                setState({
+                  ...state,
+                  selectedCollections: [],
+                  selectedOperations: [],
+                  selectedSourceNames: [],
+                });
+              }}
+            >
+              Clear Filters
+            </Button>
 
-          <Table celled striped sortable>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Collection</Table.HeaderCell>
-                <Table.HeaderCell>Operation</Table.HeaderCell>
-                <Table.HeaderCell>Command</Table.HeaderCell>
-                <Table.HeaderCell>Duration</Table.HeaderCell>
-                <Table.HeaderCell width="one">Action</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
+            <Table celled striped sortable>
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell>Collection</Table.HeaderCell>
+                  <Table.HeaderCell>Operation</Table.HeaderCell>
+                  <Table.HeaderCell>Command</Table.HeaderCell>
+                  <Table.HeaderCell>Duration</Table.HeaderCell>
+                  <Table.HeaderCell width="one">Action</Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
 
-            <Table.Body>
-              {logs?.map((log) => (
-                <Log key={log.id} log={log as ILog} />
-              ))}
-            </Table.Body>
-            <Table.Footer>
-              <Table.Row>
-                <Table.HeaderCell colSpan="5">
-                  <Pagination
-                    floated="right"
-                    activePage={state.activePage}
-                    onPageChange={handlePaginationChange}
-                    size="mini"
-                    totalPages={totalPages || 0}
-                  />
-                </Table.HeaderCell>
-              </Table.Row>
-            </Table.Footer>
-          </Table>
+              <Table.Body>
+                {logs?.map((log) => (
+                  <Log key={log.id} log={log as ILog} />
+                ))}
+              </Table.Body>
+              <Table.Footer>
+                <Table.Row>
+                  <Table.HeaderCell colSpan="5">
+                    <Pagination
+                      floated="right"
+                      activePage={state.activePage}
+                      onPageChange={handlePaginationChange}
+                      size="mini"
+                      totalPages={totalPages || 0}
+                    />
+                  </Table.HeaderCell>
+                </Table.Row>
+              </Table.Footer>
+            </Table>
+          </div>
         </>
       ) : (
         ""

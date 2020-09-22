@@ -73,7 +73,7 @@ export default function Logs() {
   };
 
   return (
-    <>
+    <div className="px-5 py-4 bg-white shadow-md rounded-lg">
       <PageTitle title="Queries" />
       <Label
         className="mr-3"
@@ -197,6 +197,6 @@ export default function Logs() {
           </Table.Footer>
         </Table>
       </div>
-    </>
+    </div>
   );
 }

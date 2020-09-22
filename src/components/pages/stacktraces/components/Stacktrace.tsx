@@ -41,7 +41,7 @@ export default function Controller(props: Props) {
       <Table.Cell>{maxDurations}s</Table.Cell>
       <Table.Cell>{avgDurations}s</Table.Cell>
       <Table.Cell>
-        <Button as={Link} size="mini" color="blue" to={`/stacktraces/${id}`}>
+        <Button as={Link} size="mini" color="purple" to={`/stacktraces/${id}`}>
           Inspect
         </Button>
       </Table.Cell>

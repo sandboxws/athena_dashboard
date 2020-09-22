@@ -84,79 +84,81 @@ export default function AwesomeLogs(props: Props) {
   return (
     <>
       <Divider horizontal>SQL Queries</Divider>
-      <DropdownFilter
-        state={state}
-        setState={setState}
-        type="tables"
-        items={tables}
-        selectedItems={state.selectedTables}
-        selectedItemsName="selectedTables"
-      />
+      <div className="px-5 py-4 bg-white shadow-md rounded-lg">
+        <DropdownFilter
+          state={state}
+          setState={setState}
+          type="tables"
+          items={tables}
+          selectedItems={state.selectedTables}
+          selectedItemsName="selectedTables"
+        />
 
-      <DropdownFilter
-        state={state}
-        setState={setState}
-        type="operations"
-        items={operations}
-        selectedItems={state.selectedOperations}
-        selectedItemsName="selectedOperations"
-      />
+        <DropdownFilter
+          state={state}
+          setState={setState}
+          type="operations"
+          items={operations}
+          selectedItems={state.selectedOperations}
+          selectedItemsName="selectedOperations"
+        />
 
-      <DropdownFilter
-        state={state}
-        setState={setState}
-        type="sources"
-        items={sourceNames}
-        selectedItems={state.selectedSourceNames}
-        selectedItemsName="selectedSourceNames"
-      />
+        <DropdownFilter
+          state={state}
+          setState={setState}
+          type="sources"
+          items={sourceNames}
+          selectedItems={state.selectedSourceNames}
+          selectedItemsName="selectedSourceNames"
+        />
 
-      <Button
-        size="mini"
-        className="float-right"
-        color="black"
-        onClick={() => {
-          setState({
-            ...state,
-            selectedTables: [],
-            selectedOperations: [],
-            selectedSourceNames: [],
-          });
-        }}
-      >
-        Clear Filters
-      </Button>
+        <Button
+          size="mini"
+          className="float-right"
+          color="black"
+          onClick={() => {
+            setState({
+              ...state,
+              selectedTables: [],
+              selectedOperations: [],
+              selectedSourceNames: [],
+            });
+          }}
+        >
+          Clear Filters
+        </Button>
 
-      <Table celled striped sortable>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>Collection</Table.HeaderCell>
-            <Table.HeaderCell>Operation</Table.HeaderCell>
-            <Table.HeaderCell>Command</Table.HeaderCell>
-            <Table.HeaderCell>Duration</Table.HeaderCell>
-            <Table.HeaderCell width="one">Action</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
+        <Table celled striped sortable>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell>Collection</Table.HeaderCell>
+              <Table.HeaderCell>Operation</Table.HeaderCell>
+              <Table.HeaderCell>Command</Table.HeaderCell>
+              <Table.HeaderCell>Duration</Table.HeaderCell>
+              <Table.HeaderCell width="one">Action</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
 
-        <Table.Body>
-          {sqlQueries?.map((sqlQuery) => (
-            <SqlQuery key={sqlQuery.id} sqlQuery={sqlQuery as ISqlQuery} />
-          ))}
-        </Table.Body>
-        <Table.Footer>
-          <Table.Row>
-            <Table.HeaderCell colSpan="5">
-              <Pagination
-                floated="right"
-                activePage={state.activePage}
-                onPageChange={handlePaginationChange}
-                size="mini"
-                totalPages={totalPages || 0}
-              />
-            </Table.HeaderCell>
-          </Table.Row>
-        </Table.Footer>
-      </Table>
+          <Table.Body>
+            {sqlQueries?.map((sqlQuery) => (
+              <SqlQuery key={sqlQuery.id} sqlQuery={sqlQuery as ISqlQuery} />
+            ))}
+          </Table.Body>
+          <Table.Footer>
+            <Table.Row>
+              <Table.HeaderCell colSpan="5">
+                <Pagination
+                  floated="right"
+                  activePage={state.activePage}
+                  onPageChange={handlePaginationChange}
+                  size="mini"
+                  totalPages={totalPages || 0}
+                />
+              </Table.HeaderCell>
+            </Table.Row>
+          </Table.Footer>
+        </Table>
+      </div>
     </>
   );
 }

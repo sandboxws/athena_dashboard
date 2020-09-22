@@ -11,3 +11,16 @@
     vertical-align: middle;
   }
 }
+
+.ui.horizontal.divider {
+  padding-top: 30px;
+  color: #4A5568;
+}
+
+.ui.horizontal.divider:before {
+  width: 15% !important;
+}
+
+.ui.horizontal.divider:after {
+  width: 85% !important;
+}

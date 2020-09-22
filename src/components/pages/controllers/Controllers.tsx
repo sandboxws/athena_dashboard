@@ -63,7 +63,7 @@ export default function Controllers() {
   };
 
   return (
-    <>
+    <div className="px-5 py-4 bg-white shadow-md rounded-lg">
       <PageTitle title="Controllers" />
       <div className="mt-10">
         <Dropdown
@@ -140,6 +140,6 @@ export default function Controllers() {
           </Table.Footer>
         </Table>
       </div>
-    </>
+    </div>
   );
 }

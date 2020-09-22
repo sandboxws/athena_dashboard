@@ -11,29 +11,33 @@ export default function LatestSidekiqWorkers(props: Props) {
   const { sidekiqWorkers } = props;
   return (
     <div className="mt-10">
-      <Divider horizontal>Latest Sidekiq Workers</Divider>
-      <Table celled striped sortable>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>Worker</Table.HeaderCell>
-            <Table.HeaderCell>Queue</Table.HeaderCell>
-            <Table.HeaderCell>JID</Table.HeaderCell>
-            <Table.HeaderCell>Queries Count</Table.HeaderCell>
-            <Table.HeaderCell>Total Duration</Table.HeaderCell>
-            <Table.HeaderCell>Date</Table.HeaderCell>
-            <Table.HeaderCell width="one">…</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
+      <div className="px-5 py-4 mt-10 bg-white shadow-md rounded-lg">
+        <h3 className="ml-2 mb-0 pb-2 text-purple-500 border-b border-gray-200">
+          Latest Sidekiq Workers
+        </h3>
+        <Table celled striped sortable>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell>Worker</Table.HeaderCell>
+              <Table.HeaderCell>Queue</Table.HeaderCell>
+              <Table.HeaderCell>JID</Table.HeaderCell>
+              <Table.HeaderCell>Queries Count</Table.HeaderCell>
+              <Table.HeaderCell>Total Duration</Table.HeaderCell>
+              <Table.HeaderCell>Date</Table.HeaderCell>
+              <Table.HeaderCell width="one">…</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
 
-        <Table.Body>
-          {sidekiqWorkers.map((sidekiqWorker) => (
-            <SidekiqWorker
-              key={sidekiqWorker.id}
-              sidekiqWorker={sidekiqWorker}
-            />
-          ))}
-        </Table.Body>
-      </Table>
+          <Table.Body>
+            {sidekiqWorkers.map((sidekiqWorker) => (
+              <SidekiqWorker
+                key={sidekiqWorker.id}
+                sidekiqWorker={sidekiqWorker}
+              />
+            ))}
+          </Table.Body>
+        </Table>
+      </div>
     </div>
   );
 }

@@ -28,7 +28,7 @@ export default function Controller(props: Props) {
       <Table.Cell>{totalDuration}s</Table.Cell>
       <Table.Cell>{createdAt}</Table.Cell>
       <Table.Cell>
-        <Button as={Link} size="mini" color="blue" to={`/controllers/${id}`}>
+        <Button as={Link} size="mini" color="purple" to={`/controllers/${id}`}>
           Inspect
         </Button>
       </Table.Cell>

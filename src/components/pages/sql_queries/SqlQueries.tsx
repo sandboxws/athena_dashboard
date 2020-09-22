@@ -76,8 +76,8 @@ export default function SqlQueries() {
   };
 
   return (
-    <>
-      <PageTitle title="Queries" />
+    <div className="px-5 py-4 bg-white shadow-md rounded-lg">
+      <PageTitle title="SQL Queries" />
       <Label
         className="mr-3"
         horizontal
@@ -200,6 +200,6 @@ export default function SqlQueries() {
           </Table.Footer>
         </Table>
       </div>
-    </>
+    </div>
   );
 }

@@ -8,7 +8,6 @@ import {
 import SyntaxHighlighter from "react-syntax-highlighter";
 import syntaxStyle from "react-syntax-highlighter/dist/esm/styles/hljs/tomorrow-night-blue";
 import voca from "voca";
-import sqlFormatter from "sql-formatter";
 
 type Props = {
   title?: string;
@@ -25,7 +24,7 @@ const initialState = {
   activeIndex: 1,
 } as State;
 
-export default function AwesomeAccordion(props: Props) {
+export default function AwesomeSqlAccordion(props: Props) {
   const { jsonContent, title, excerpt, sqlContent } = props;
   const [state, setState] = useState(initialState);
 
@@ -38,9 +37,6 @@ export default function AwesomeAccordion(props: Props) {
     setState({ activeIndex: newIndex });
   };
 
-  const formattedSql =
-    sqlContent !== undefined ? sqlFormatter.format(sqlContent) : sqlContent;
-
   return (
     <>
       {title !== null && title !== undefined ? (
@@ -48,31 +44,28 @@ export default function AwesomeAccordion(props: Props) {
       ) : (
         ""
       )}
-
-      <div className="px-5 py-4 bg-white shadow-md rounded-lg">
-        <Accordion fluid styled>
-          <Accordion.Title
-            active={activeIndex === 0}
-            index={0}
-            onClick={handleClick}
+      <Accordion fluid styled>
+        <Accordion.Title
+          active={activeIndex === 0}
+          index={0}
+          onClick={handleClick}
+        >
+          <Icon name="dropdown" />
+          {voca.truncate(excerpt, 99)}
+        </Accordion.Title>
+        <Accordion.Content active={activeIndex === 0}>
+          <SyntaxHighlighter
+            language={jsonContent !== undefined ? "json" : "sql"}
+            className="border border-gray-300 rounded-lg"
+            style={syntaxStyle}
+            wrapLines={false}
           >
-            <Icon name="dropdown" />
-            {voca.truncate(excerpt, 99)}
-          </Accordion.Title>
-          <Accordion.Content active={activeIndex === 0}>
-            <SyntaxHighlighter
-              language={jsonContent !== undefined ? "json" : "sql"}
-              className="border border-gray-300 rounded-lg"
-              style={syntaxStyle}
-              wrapLines={false}
-            >
-              {jsonContent !== undefined
-                ? JSON.stringify(JSON.parse(jsonContent), null, 2)
-                : formattedSql}
-            </SyntaxHighlighter>
-          </Accordion.Content>
-        </Accordion>
-      </div>
+            {jsonContent !== undefined
+              ? JSON.stringify(JSON.parse(jsonContent), null, 2)
+              : sqlContent}
+          </SyntaxHighlighter>
+        </Accordion.Content>
+      </Accordion>
     </>
   );
 }

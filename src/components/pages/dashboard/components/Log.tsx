@@ -31,7 +31,12 @@ export default function Log(props: Props) {
       </Table.Cell>
       <Table.Cell>{duration}</Table.Cell>
       <Table.Cell>
-        <Button as={Link} size="mini" color="blue" to={`/queries/${id}`}>
+        <Button
+          as={Link}
+          size="mini"
+          color={operationColor(operation)}
+          to={`/queries/${id}`}
+        >
           Inspect
         </Button>
       </Table.Cell>

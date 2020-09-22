@@ -4,10 +4,10 @@ import { SemanticCOLORS } from "semantic-ui-react/dist/commonjs/generic";
 
 export default function operationColor(operation: string): SemanticCOLORS {
   const colorsMap = new Map<string, SemanticCOLORS>();
-  colorsMap.set("find", "orange");
-  colorsMap.set("SELECT", "orange");
-  colorsMap.set("insert", "purple");
-  colorsMap.set("INSERT", "purple");
+  colorsMap.set("find", "purple");
+  colorsMap.set("SELECT", "purple");
+  colorsMap.set("insert", "orange");
+  colorsMap.set("INSERT", "orange");
   colorsMap.set("update", "teal");
   colorsMap.set("UPDATE", "teal");
   colorsMap.set("distinct", "yellow");
