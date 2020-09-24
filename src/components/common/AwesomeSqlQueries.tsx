@@ -83,8 +83,10 @@ export default function AwesomeLogs(props: Props) {
 
   return (
     <>
-      <Divider horizontal>SQL Queries</Divider>
-      <div className="px-5 py-4 bg-white shadow-md rounded-lg">
+      <div className="mt-10 px-5 py-4 bg-white shadow-md rounded-lg">
+        <h3 className="ml-2 m5-2 pb-2 text-purple-500 border-b border-gray-200">
+          SQL Queries
+        </h3>
         <DropdownFilter
           state={state}
           setState={setState}

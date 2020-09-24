@@ -43,13 +43,14 @@ export default function AwesomeAccordion(props: Props) {
 
   return (
     <>
-      {title !== null && title !== undefined ? (
-        <Divider horizontal>{title}</Divider>
-      ) : (
-        ""
-      )}
-
       <div className="px-5 py-4 bg-white shadow-md rounded-lg">
+        {title !== null && title !== undefined ? (
+          <h3 className="ml-2 m5-2 pb-2 text-purple-500 border-b border-gray-200">
+            {title}
+          </h3>
+        ) : (
+          ""
+        )}
         <Accordion fluid styled>
           <Accordion.Title
             active={activeIndex === 0}

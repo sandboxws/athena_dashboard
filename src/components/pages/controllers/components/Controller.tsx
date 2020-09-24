@@ -29,7 +29,7 @@ export default function Controller(props: Props) {
         {Math.round((totalDuration || 0) + (sqlTotalDuration || 0)) / 1000}s
       </Table.Cell>
       <Table.Cell>
-        <Button as={Link} size="mini" color="blue" to={`/controllers/${id}`}>
+        <Button as={Link} size="mini" color="purple" to={`/controllers/${id}`}>
           Inspect
         </Button>
       </Table.Cell>

@@ -34,7 +34,7 @@ export default function Controller() {
 
   return (
     <>
-      <div className="px-5 py-4 bg-white shadow-md rounded-lg">
+      <div className="mb-10 px-5 py-4 bg-white shadow-md rounded-lg">
         <h1 className="text-2xl text-gray-700 pb-0 mb-0">{`Controller #${id}`}</h1>
         <p className="mt-1 max-w-2xl text-base leading-5 text-gray-600">
           {`${controller.name}#${controller.action}`}
@@ -63,8 +63,10 @@ export default function Controller() {
       />
       {collectionsStats.length > 0 ? (
         <>
-          <Divider horizontal>MongoDB Stats</Divider>
-          <div className="px-5 py-4 bg-white shadow-md rounded-lg">
+          <div className="mt-10 px-5 py-4 bg-white shadow-md rounded-lg">
+            <h3 className="ml-2 m5-2 pb-2 text-purple-500 border-b border-gray-200">
+              MongoDB Stats
+            </h3>
             <Table>
               <Table.Body className="bg-gray-100">
                 {chunk(controller.collectionsStats, 2).map(
@@ -108,8 +110,10 @@ export default function Controller() {
 
       {tablesStats.length > 0 ? (
         <>
-          <Divider horizontal>SQL Stats</Divider>
-          <div className="px-5 py-4 bg-white shadow-md rounded-lg">
+          <div className="mt-10 px-5 py-4 bg-white shadow-md rounded-lg">
+            <h3 className="ml-2 m5-2 pb-2 text-purple-500 border-b border-gray-200">
+              SQL Stats
+            </h3>
             <Table>
               <Table.Body className="bg-gray-100">
                 {chunk(controller.tablesStats, 2).map((tablesStats, i) => {

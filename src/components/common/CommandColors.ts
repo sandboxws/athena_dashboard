@@ -12,8 +12,8 @@ export default function operationColor(operation: string): SemanticCOLORS {
   colorsMap.set("UPDATE", "teal");
   colorsMap.set("distinct", "yellow");
   colorsMap.set("delete", "red");
-  colorsMap.set("aggregate", "blue");
-  colorsMap.set("count", "violet");
+  colorsMap.set("aggregate", "green");
+  colorsMap.set("count", "blue");
   colorsMap.set("getMore", "pink");
 
   return colorsMap.get(operation)!;

@@ -30,7 +30,6 @@ export default function Dashboard() {
 
   return (
     <div>
-      {/* <PageTitle title="Dashboard" /> */}
       <>
         <Stats stats={operationsStats} />
         <Charts stats={operationsStats} collections={topCollections} />
