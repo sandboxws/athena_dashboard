@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from "react";
 import PageTitle from "../../common/PageTitle";
-import { Label, Table, Divider } from "semantic-ui-react";
+import { Label, Table } from "semantic-ui-react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import syntaxStyle from "react-syntax-highlighter/dist/esm/styles/hljs/tomorrow-night-blue";
 import { useLogQuery } from "../../../generated/graphql";
@@ -10,7 +10,6 @@ import SidekiqLogo from "../../../assets/icons/sidekiq.svg";
 import "./logs.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ApolloMessage from "../../common/ApolloMessage";
-import classNames from "classnames";
 import AwesomeLable from "../../common/AwesomeLabel";
 
 type Props = {
@@ -96,7 +95,7 @@ export default function Log(props: Props) {
           </h3>
           <SyntaxHighlighter
             language="json"
-            className="border border-gray-300 rounded-lg"
+            className="mongodb-command border border-gray-300 rounded-lg"
             style={syntaxStyle}
             wrapLines={false}
           >
