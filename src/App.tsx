@@ -20,7 +20,7 @@ library.add(
   faServer,
   faSortAmountUp,
   faSortAmountUpAlt,
-  faTerminal,
+  faTerminal
 );
 
 function App() {

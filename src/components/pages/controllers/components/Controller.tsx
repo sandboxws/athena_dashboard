@@ -25,9 +25,7 @@ export default function Controller(props: Props) {
       <Table.Cell>{action}</Table.Cell>
       <Table.Cell>{voca.truncate(path, 99)}</Table.Cell>
       <Table.Cell>{(logsCount || 0) + (sqlQueriesCount || 0)}</Table.Cell>
-      <Table.Cell>
-        {Math.round((totalDuration || 0) + (sqlTotalDuration || 0)) / 1000}s
-      </Table.Cell>
+      <Table.Cell>{(totalDuration || 0) + (sqlTotalDuration || 0)}s</Table.Cell>
       <Table.Cell>
         <Button as={Link} size="mini" color="purple" to={`/controllers/${id}`}>
           Inspect

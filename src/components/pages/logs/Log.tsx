@@ -91,15 +91,15 @@ export default function Log(props: Props) {
       <div className="grid grid-cols-12">
         <div className="mt-10 px-5 py-4 mr-5 bg-white shadow-md rounded-lg col-span-7">
           <h3 className="ml-2 m5-2 pb-2 text-purple-500 border-b border-gray-200">
-            MongoDB Command
+            Stacktrace
           </h3>
           <SyntaxHighlighter
-            language="json"
-            className="mongodb-command border border-gray-300 rounded-lg"
+            language="ruby"
+            className="stacktrace border border-gray-300 rounded-lg"
             style={syntaxStyle}
             wrapLines={false}
           >
-            {JSON.stringify(JSON.parse(log?.command!), null, 2)}
+            {JSON.stringify(JSON.parse(log?.stacktrace.stacktrace!), null, 2)}
           </SyntaxHighlighter>
         </div>
 
@@ -119,12 +119,13 @@ export default function Log(props: Props) {
                 </Table.Cell>
                 <Table.Cell>
                   <AwesomeLable
-                    title="Used Indexes"
-                    stat={log?.explain?.usedIndexes || "N/A"}
+                    title="Operation"
+                    stat={log?.operation}
                     color="purple"
                   />
                 </Table.Cell>
               </Table.Row>
+
               <Table.Row>
                 <Table.Cell>
                   <AwesomeLable
@@ -175,6 +176,15 @@ export default function Log(props: Props) {
                   />
                 </Table.Cell>
               </Table.Row>
+              <Table.Row>
+                <Table.Cell colSpan={2}>
+                  <AwesomeLable
+                    title="Used Indexes"
+                    stat={log?.explain?.usedIndexes || "N/A"}
+                    color="indigo"
+                  />
+                </Table.Cell>
+              </Table.Row>
             </Table.Body>
           </Table>
         </div>
@@ -183,15 +193,15 @@ export default function Log(props: Props) {
       <div className="grid grid-cols-12">
         <div className="mt-10 mr-2 px-5 py-4 bg-white shadow-md rounded-lg col-span-7">
           <h3 className="ml-2 m5-2 pb-2 text-purple-500 border-b border-gray-200">
-            Stacktrace
+            MongoDB Command
           </h3>
           <SyntaxHighlighter
-            language="ruby"
+            language="json"
             className="border border-gray-300 rounded-lg"
             style={syntaxStyle}
             wrapLines={false}
           >
-            {JSON.stringify(JSON.parse(log?.stacktrace.stacktrace!), null, 2)}
+            {JSON.stringify(JSON.parse(log?.command!), null, 2)}
           </SyntaxHighlighter>
         </div>
 

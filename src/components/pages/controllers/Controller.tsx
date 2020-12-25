@@ -1,5 +1,5 @@
 import React from "react";
-import { Divider, Label, Table } from "semantic-ui-react";
+import { Label, Table } from "semantic-ui-react";
 import chunk from "lodash/chunk";
 import { useControllerQuery, IStat } from "../../../generated/graphql";
 import operationColor from "../../common/CommandColors";
@@ -47,11 +47,11 @@ export default function Controller() {
             {count}
           </Label.Detail>
         </Label>
-        <Label color={duration / 1000 >= 10 ? "red" : "green"} horizontal>
+        <Label color={duration >= 10 ? "red" : "green"} horizontal>
           Duration
           <Label.Detail>
             <FontAwesomeIcon icon="clock" className="mr-1" />
-            {(duration / 1000).toFixed(5)}
+            {duration}
           </Label.Detail>
         </Label>
       </div>
@@ -79,7 +79,7 @@ export default function Controller() {
                               key={collectionStats.name}
                               className="font-medium"
                             >
-                              {collectionStats.name}
+                              <Label>{collectionStats.name}</Label>
                             </Table.Cell>
                             <Table.Cell
                               colSpan={collectionsStats.length === 1 ? 3 : 0}
