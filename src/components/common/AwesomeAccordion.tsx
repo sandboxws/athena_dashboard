@@ -8,11 +8,13 @@ import {
 import SyntaxHighlighter from "react-syntax-highlighter";
 import syntaxStyle from "react-syntax-highlighter/dist/esm/styles/hljs/tomorrow-night-blue";
 import voca from "voca";
+import sqlFormatter from "sql-formatter";
 
 type Props = {
   title?: string;
   excerpt: string | undefined;
-  jsonContent: string;
+  jsonContent?: string | undefined;
+  sqlContent?: string | undefined;
 };
 
 type State = {
@@ -24,7 +26,7 @@ const initialState = {
 } as State;
 
 export default function AwesomeAccordion(props: Props) {
-  const { jsonContent, title, excerpt } = props;
+  const { jsonContent, title, excerpt, sqlContent } = props;
   const [state, setState] = useState(initialState);
 
   const { activeIndex } = state;
@@ -36,33 +38,42 @@ export default function AwesomeAccordion(props: Props) {
     setState({ activeIndex: newIndex });
   };
 
+  const formattedSql =
+    sqlContent !== undefined ? sqlFormatter.format(sqlContent) : sqlContent;
+
   return (
     <>
-      {title !== null && title !== undefined ? (
-        <Divider horizontal>{title}</Divider>
-      ) : (
-        ""
-      )}
-      <Accordion fluid styled>
-        <Accordion.Title
-          active={activeIndex === 0}
-          index={0}
-          onClick={handleClick}
-        >
-          <Icon name="dropdown" />
-          {voca.truncate(excerpt, 99)}
-        </Accordion.Title>
-        <Accordion.Content active={activeIndex === 0}>
-          <SyntaxHighlighter
-            language="json"
-            className="border border-gray-300 rounded-lg"
-            style={syntaxStyle}
-            wrapLines={false}
+      <div className="px-5 py-4 bg-white shadow-md rounded-lg">
+        {title !== null && title !== undefined ? (
+          <h3 className="ml-2 m5-2 pb-2 text-purple-500 border-b border-gray-200">
+            {title}
+          </h3>
+        ) : (
+          ""
+        )}
+        <Accordion fluid styled>
+          <Accordion.Title
+            active={activeIndex === 0}
+            index={0}
+            onClick={handleClick}
           >
-            {JSON.stringify(JSON.parse(jsonContent), null, 2)}
-          </SyntaxHighlighter>
-        </Accordion.Content>
-      </Accordion>
+            <Icon name="dropdown" />
+            {voca.truncate(excerpt, 99)}
+          </Accordion.Title>
+          <Accordion.Content active={activeIndex === 0}>
+            <SyntaxHighlighter
+              language={jsonContent !== undefined ? "json" : "sql"}
+              className="border border-gray-300 rounded-lg"
+              style={syntaxStyle}
+              wrapLines={false}
+            >
+              {jsonContent !== undefined
+                ? JSON.stringify(JSON.parse(jsonContent), null, 2)
+                : formattedSql}
+            </SyntaxHighlighter>
+          </Accordion.Content>
+        </Accordion>
+      </div>
     </>
   );
 }

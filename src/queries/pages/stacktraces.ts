@@ -2,7 +2,7 @@ import gql from "graphql-tag";
 
 export const LATEST_STACKTRACES_GQL = gql`
   query LatestStacktraces($limit: Int, $page: Int) {
-    mongodbStacktraces(limit: $limit, page: $page) {
+    stacktraces(limit: $limit, page: $page) {
       currentPage
       previousPage
       nextPage
@@ -16,6 +16,10 @@ export const LATEST_STACKTRACES_GQL = gql`
         minDuration
         maxDuration
         avgDuration
+        sqlQueriesCount
+        sqlQueriesMinDuration
+        sqlQueriesMaxDuration
+        sqlQueriesAvgDuration
       }
     }
   }
@@ -31,7 +35,15 @@ export const SHOW_MONOGODB_STRACKTRACE_GQL = gql`
       minDuration
       maxDuration
       avgDuration
+      sqlQueriesCount
+      sqlQueriesMinDuration
+      sqlQueriesMaxDuration
+      sqlQueriesAvgDuration
       sourcesStats {
+        name
+        value
+      }
+      sqlQueriesSourcesStats {
         name
         value
       }

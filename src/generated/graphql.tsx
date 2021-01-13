@@ -16,6 +16,64 @@ export type Scalars = {
   DateTime: any;
 };
 
+/** Awesome Rails Controller */
+export type IAwesomeController = {
+  __typename?: 'AwesomeController';
+  /** Rails controller action */
+  action: Scalars['String'];
+  /** Controller stats */
+  collectionsStats: Maybe<Array<ICollectionStats>>;
+  /** Count of COLLSCAN queries */
+  collscans: Maybe<Scalars['Int']>;
+  /** Timestamp in UTC */
+  createdAt: Scalars['DateTime'];
+  /** Primary key */
+  id: Scalars['ID'];
+  /** Associated MongoDB Logs */
+  logs: Maybe<ILogs>;
+  /** Total count of logs per action per path */
+  logsCount: Maybe<Scalars['Int']>;
+  /** Name of a rails controller */
+  name: Scalars['String'];
+  /** Controller stats */
+  opsStats: Maybe<Array<IStat>>;
+  /** HTTP request params */
+  params: Scalars['String'];
+  /** Mini version of the HTTP request params */
+  paramsExcerpt: Scalars['String'];
+  /** Rails controller path */
+  path: Scalars['String'];
+  /** A unique id identifying a session during which queries are logged. */
+  sessionId: Scalars['String'];
+  /** Controller stats */
+  sqlOpsStats: Maybe<Array<IStat>>;
+  /** Associated SQL Queries */
+  sqlQueries: Maybe<ISqlQueries>;
+  /** Total count of queries per action per path */
+  sqlQueriesCount: Maybe<Scalars['Int']>;
+  /** Total duraiton of all sql queries */
+  sqlTotalDuration: Maybe<Scalars['Float']>;
+  /** Controller stats */
+  tablesStats: Maybe<Array<ITableStats>>;
+  /** Total duraiton of all sql queries */
+  totalDuration: Maybe<Scalars['Float']>;
+  /** Timestamp in UTC */
+  updatedAt: Scalars['DateTime'];
+};
+
+export type IAwesomeControllers = IPageable & {
+  __typename?: 'AwesomeControllers';
+  currentPage: Maybe<Scalars['Int']>;
+  firstPage: Maybe<Scalars['Boolean']>;
+  lastPage: Maybe<Scalars['Boolean']>;
+  nextPage: Maybe<Scalars['Int']>;
+  nodes: Array<IAwesomeController>;
+  previousPage: Maybe<Scalars['Int']>;
+  size: Maybe<Scalars['Int']>;
+  totalItems: Maybe<Scalars['Int']>;
+  totalPages: Maybe<Scalars['Int']>;
+};
+
 export type ICollectionStats = {
   __typename?: 'CollectionStats';
   /** Collection name */
@@ -68,19 +126,6 @@ export type IController = {
   totalDuration: Scalars['Float'];
   /** Timestamp in UTC */
   updatedAt: Scalars['DateTime'];
-};
-
-export type IControllers = IPageable & {
-  __typename?: 'Controllers';
-  currentPage: Maybe<Scalars['Int']>;
-  firstPage: Maybe<Scalars['Boolean']>;
-  lastPage: Maybe<Scalars['Boolean']>;
-  nextPage: Maybe<Scalars['Int']>;
-  nodes: Array<IController>;
-  previousPage: Maybe<Scalars['Int']>;
-  size: Maybe<Scalars['Int']>;
-  totalItems: Maybe<Scalars['Int']>;
-  totalPages: Maybe<Scalars['Int']>;
 };
 
 /** MongoDB Dashboard */
@@ -176,7 +221,7 @@ export type IGlobalStats = {
 export type ILog = {
   __typename?: 'Log';
   /** The originating app */
-  appName: Scalars['String'];
+  appName: Maybe<Scalars['String']>;
   /** Collection name */
   collection: Scalars['String'];
   /** A COLLSCAN flag */
@@ -186,7 +231,7 @@ export type ILog = {
   /** An excerpt of the command performed */
   commandExcerpt: Scalars['String'];
   /** Associated Controller */
-  controller: Maybe<IController>;
+  controller: Maybe<IAwesomeController>;
   /** Timestamp in UTC */
   createdAt: Scalars['DateTime'];
   /** Query duration in seconds */
@@ -263,18 +308,35 @@ export type IPageable = {
 
 export type IQuery = {
   __typename?: 'Query';
+  controller: IAwesomeController;
+  controllers: IAwesomeControllers;
   dashboard: IDashboard;
   globalStats: IGlobalStats;
   logsWithStats: ILogsWithStats;
-  mongodbController: IController;
-  mongodbControllers: IControllers;
   mongodbExplains: Array<IExplain>;
   mongodbLog: ILog;
   mongodbLogs: ILogs;
   mongodbStacktrace: IStacktrace;
-  mongodbStacktraces: IStacktraces;
   sidekiqWorker: ISidekiqWorker;
   sidekiqWorkersWithStats: ISidekiqWorkersWithStats;
+  sqlQueriesWithStats: ISqlQueriesWithStats;
+  sqlQuery: ISqlQuery;
+  stacktraces: IStacktraces;
+};
+
+
+export type IQueryControllerArgs = {
+  id: Scalars['Int'];
+  logsPage?: Maybe<Scalars['Int']>;
+  sqlQueriesPage?: Maybe<Scalars['Int']>;
+};
+
+
+export type IQueryControllersArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  page?: Maybe<Scalars['Int']>;
+  names?: Maybe<Array<Scalars['String']>>;
+  mode?: Maybe<Scalars['String']>;
 };
 
 
@@ -293,20 +355,6 @@ export type IQueryLogsWithStatsArgs = {
   collections?: Maybe<Array<Scalars['String']>>;
   operations?: Maybe<Array<Scalars['String']>>;
   sourceNames?: Maybe<Array<Scalars['String']>>;
-  mode?: Maybe<Scalars['String']>;
-};
-
-
-export type IQueryMongodbControllerArgs = {
-  id: Scalars['Int'];
-  logsPage?: Maybe<Scalars['Int']>;
-};
-
-
-export type IQueryMongodbControllersArgs = {
-  limit?: Maybe<Scalars['Int']>;
-  page?: Maybe<Scalars['Int']>;
-  names?: Maybe<Array<Scalars['String']>>;
   mode?: Maybe<Scalars['String']>;
 };
 
@@ -339,12 +387,6 @@ export type IQueryMongodbStacktraceArgs = {
 };
 
 
-export type IQueryMongodbStacktracesArgs = {
-  limit?: Maybe<Scalars['Int']>;
-  page?: Maybe<Scalars['Int']>;
-};
-
-
 export type IQuerySidekiqWorkerArgs = {
   id: Scalars['Int'];
 };
@@ -356,6 +398,30 @@ export type IQuerySidekiqWorkersWithStatsArgs = {
   workers?: Maybe<Array<Scalars['String']>>;
   queues?: Maybe<Array<Scalars['String']>>;
   mode?: Maybe<Scalars['String']>;
+};
+
+
+export type IQuerySqlQueriesWithStatsArgs = {
+  controllerId: Maybe<Scalars['Int']>;
+  stacktraceId: Maybe<Scalars['Int']>;
+  sidekiqWorkerId: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  page?: Maybe<Scalars['Int']>;
+  tables?: Maybe<Array<Scalars['String']>>;
+  operations?: Maybe<Array<Scalars['String']>>;
+  sourceNames?: Maybe<Array<Scalars['String']>>;
+  mode?: Maybe<Scalars['String']>;
+};
+
+
+export type IQuerySqlQueryArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type IQueryStacktracesArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  page?: Maybe<Scalars['Int']>;
 };
 
 /** Sidekiq Job */
@@ -424,6 +490,117 @@ export type ISidekiqWorkersWithStats = {
   workersStats: Array<IStat>;
 };
 
+/** SQL Query Explain */
+export type ISqlExplain = {
+  __typename?: 'SqlExplain';
+  /** Total actual loops */
+  actualLoops: Scalars['Float'];
+  /** Total actual rows */
+  actualRows: Scalars['Float'];
+  /** Total actual startup time */
+  actualStartupTime: Scalars['Float'];
+  /** Total actual total time */
+  actualTotalTime: Scalars['Float'];
+  /** Rails controller */
+  controller: Maybe<IController>;
+  /** Timestamp in UTC */
+  createdAt: Scalars['DateTime'];
+  /** The query performed */
+  explainOutput: Scalars['String'];
+  /** SQL Query primary key */
+  id: Scalars['ID'];
+  /** Total Rows */
+  rows: Scalars['Float'];
+  /** Seq Scans performed under any plan */
+  seqScans: Scalars['Int'];
+  /** A unique id identifying a session during which queries are logged. */
+  sessionId: Scalars['String'];
+  /** SQL Query log */
+  sqlQuery: ISqlQuery;
+  /** Rails Stacktrace */
+  stacktrace: IStacktrace;
+  /** Total Startup Cost */
+  startupCost: Scalars['Float'];
+  /** Total Cost */
+  totalCost: Scalars['Float'];
+  /** SQL's explain as JSON */
+  treeviz: Maybe<Scalars['String']>;
+  /** Timestamp in UTC */
+  updatedAt: Scalars['DateTime'];
+  /** Total width */
+  width: Scalars['Float'];
+};
+
+export type ISqlQueries = IPageable & {
+  __typename?: 'SqlQueries';
+  currentPage: Maybe<Scalars['Int']>;
+  firstPage: Maybe<Scalars['Boolean']>;
+  lastPage: Maybe<Scalars['Boolean']>;
+  nextPage: Maybe<Scalars['Int']>;
+  nodes: Array<ISqlQuery>;
+  previousPage: Maybe<Scalars['Int']>;
+  size: Maybe<Scalars['Int']>;
+  totalItems: Maybe<Scalars['Int']>;
+  totalPages: Maybe<Scalars['Int']>;
+};
+
+/** MongoDB Query Logs */
+export type ISqlQueriesWithStats = {
+  __typename?: 'SqlQueriesWithStats';
+  /** MongoDB operations list */
+  operations: Array<Scalars['String']>;
+  /** MongoDB operation stats */
+  operationsStats: Array<IStat>;
+  /** Source names list */
+  sourceNames: Array<Scalars['String']>;
+  sqlQueries: ISqlQueries;
+  /** MongoDB tables list */
+  tables: Array<Scalars['String']>;
+  /** MongoDB collection stats */
+  tablesStats: Array<IStat>;
+  /** Queries total execution duration in seconds */
+  totalDuration: Scalars['Float'];
+};
+
+/** SQL Query Log */
+export type ISqlQuery = {
+  __typename?: 'SqlQuery';
+  /** The originating app */
+  appName: Scalars['String'];
+  /** Associated Controller */
+  controller: Maybe<IAwesomeController>;
+  /** Timestamp in UTC */
+  createdAt: Scalars['DateTime'];
+  /** Query duration in seconds */
+  duration: Scalars['Float'];
+  /** Log primary key */
+  id: Scalars['ID'];
+  /** The operation performed */
+  operation: Scalars['String'];
+  /** The operation performed */
+  query: Scalars['String'];
+  /** An excerpt of the query performed */
+  queryExcerpt: Scalars['String'];
+  /** Schema name */
+  schemaName: Scalars['String'];
+  /** A unique id identifying a session during which queries are logged. */
+  sessionId: Scalars['String'];
+  /** Sidekiq job args */
+  sidekiqArgs: Maybe<Scalars['String']>;
+  /** Associated Sidekiq Job */
+  sidekiqWorker: Maybe<ISidekiqWorker>;
+  /** Source of the query (ex: console, sidekiq, server, …) */
+  sourceName: Scalars['String'];
+  /** Associated Query Explain */
+  sqlExplain: Maybe<ISqlExplain>;
+  /** Associated Stacktrace */
+  stacktrace: IStacktrace;
+  /** Table name */
+  tableName: Scalars['String'];
+  /** Timestamp in UTC */
+  updatedAt: Scalars['DateTime'];
+};
+
 /** MongoDB Query Stacktrace */
 export type IStacktrace = {
   __typename?: 'Stacktrace';
@@ -443,6 +620,18 @@ export type IStacktrace = {
   minDuration: Maybe<Scalars['Float']>;
   /** Sources stats */
   sourcesStats: Array<IStat>;
+  /** Associated SQL Queries */
+  sqlQueries: ISqlQueries;
+  /** Average duration for a query originating from this stacktrace */
+  sqlQueriesAvgDuration: Maybe<Scalars['Float']>;
+  /** Total count of sql queries originating from this stacktrace */
+  sqlQueriesCount: Maybe<Scalars['Int']>;
+  /** Max duration for a query originating from this stacktrace */
+  sqlQueriesMaxDuration: Maybe<Scalars['Float']>;
+  /** Min duration for a query originating from this stacktrace */
+  sqlQueriesMinDuration: Maybe<Scalars['Float']>;
+  /** Sources stats */
+  sqlQueriesSourcesStats: Array<IStat>;
   /** A minified version of a stacktrace */
   stacktrace: Scalars['String'];
   /** A minified version of a stacktrace */
@@ -472,6 +661,14 @@ export type IStat = {
   value: Scalars['Int'];
 };
 
+export type ITableStats = {
+  __typename?: 'TableStats';
+  /** Table name */
+  name: Scalars['String'];
+  /** Table stats */
+  stats: Array<IStat>;
+};
+
 export type ILatestControllersQueryVariables = {
   limit: Maybe<Scalars['Int']>;
   page: Maybe<Scalars['Int']>;
@@ -479,27 +676,35 @@ export type ILatestControllersQueryVariables = {
 };
 
 
-export type ILatestControllersQuery = { __typename?: 'Query', mongodbControllers: { __typename?: 'Controllers', currentPage: Maybe<number>, previousPage: Maybe<number>, nextPage: Maybe<number>, totalItems: Maybe<number>, totalPages: Maybe<number>, nodes: Array<{ __typename?: 'Controller', id: string, name: string, action: string, path: string, logsCount: number, totalDuration: number }> } };
+export type ILatestControllersQuery = { __typename?: 'Query', controllers: { __typename?: 'AwesomeControllers', currentPage: Maybe<number>, previousPage: Maybe<number>, nextPage: Maybe<number>, totalItems: Maybe<number>, totalPages: Maybe<number>, nodes: Array<{ __typename?: 'AwesomeController', id: string, name: string, action: string, path: string, logsCount: Maybe<number>, totalDuration: Maybe<number>, sqlTotalDuration: Maybe<number>, sqlQueriesCount: Maybe<number> }> } };
 
-export type IMongoDbControllerQueryVariables = {
+export type IControllerQueryVariables = {
   id: Scalars['Int'];
 };
 
 
-export type IMongoDbControllerQuery = { __typename?: 'Query', mongodbController: { __typename?: 'Controller', id: string, name: string, action: string, path: string, params: string, paramsExcerpt: string, logsCount: number, sessionId: string, totalDuration: number, collscans: number, createdAt: any, updatedAt: any, opsStats: Array<{ __typename?: 'Stat', name: string, value: number }>, collectionsStats: Array<{ __typename?: 'CollectionStats', name: string, stats: Array<{ __typename?: 'Stat', name: string, value: number }> }> } };
+export type IControllerQuery = { __typename?: 'Query', controller: { __typename?: 'AwesomeController', id: string, name: string, action: string, path: string, params: string, paramsExcerpt: string, logsCount: Maybe<number>, sessionId: string, totalDuration: Maybe<number>, sqlTotalDuration: Maybe<number>, sqlQueriesCount: Maybe<number>, collscans: Maybe<number>, createdAt: any, updatedAt: any, opsStats: Maybe<Array<{ __typename?: 'Stat', name: string, value: number }>>, sqlOpsStats: Maybe<Array<{ __typename?: 'Stat', name: string, value: number }>>, collectionsStats: Maybe<Array<{ __typename?: 'CollectionStats', name: string, stats: Array<{ __typename?: 'Stat', name: string, value: number }> }>>, tablesStats: Maybe<Array<{ __typename?: 'TableStats', name: string, stats: Array<{ __typename?: 'Stat', name: string, value: number }> }>> } };
 
-export type IMongoDbControllerLogsQueryVariables = {
+export type IAwesomeControllerLogsQueryVariables = {
   id: Scalars['Int'];
   logsPage: Maybe<Scalars['Int']>;
 };
 
 
-export type IMongoDbControllerLogsQuery = { __typename?: 'Query', mongodbController: { __typename?: 'Controller', logs: { __typename?: 'Logs', currentPage: Maybe<number>, previousPage: Maybe<number>, nextPage: Maybe<number>, totalItems: Maybe<number>, totalPages: Maybe<number>, nodes: Array<{ __typename?: 'Log', id: string, collection: string, command: string, commandExcerpt: string, operation: string, duration: number }> } } };
+export type IAwesomeControllerLogsQuery = { __typename?: 'Query', controller: { __typename?: 'AwesomeController', logs: Maybe<{ __typename?: 'Logs', currentPage: Maybe<number>, previousPage: Maybe<number>, nextPage: Maybe<number>, totalItems: Maybe<number>, totalPages: Maybe<number>, nodes: Array<{ __typename?: 'Log', id: string, collection: string, command: string, commandExcerpt: string, operation: string, duration: number }> }> } };
+
+export type IAwesomeControllerSqlQueriesQueryVariables = {
+  id: Scalars['Int'];
+  sqlQueriesPage: Maybe<Scalars['Int']>;
+};
+
+
+export type IAwesomeControllerSqlQueriesQuery = { __typename?: 'Query', controller: { __typename?: 'AwesomeController', sqlQueries: Maybe<{ __typename?: 'SqlQueries', currentPage: Maybe<number>, previousPage: Maybe<number>, nextPage: Maybe<number>, totalItems: Maybe<number>, totalPages: Maybe<number>, nodes: Array<{ __typename?: 'SqlQuery', id: string, tableName: string, schemaName: string, query: string, queryExcerpt: string, operation: string, duration: number }> }> } };
 
 export type IDashboardQueryQueryVariables = {};
 
 
-export type IDashboardQueryQuery = { __typename?: 'Query', dashboard: { __typename?: 'Dashboard', operationsStats: Array<{ __typename?: 'Command', name: string, totalCount: number, maxDuration: number }>, topCollections: Array<{ __typename?: 'Command', name: string, totalCount: number, maxDuration: number }>, mongodbLatestLogs: Array<{ __typename?: 'Log', id: string, collection: string, operation: string, appName: string, sourceName: string, command: string, commandExcerpt: string, duration: number, createdAt: any }>, mongodbLatestControllers: Maybe<Array<{ __typename?: 'Controller', id: string, action: string, name: string, path: string, logsCount: number, totalDuration: number, createdAt: any }>>, latestSidekiqWorkers: Maybe<Array<{ __typename?: 'SidekiqWorker', id: string, jid: string, worker: string, queue: string, logsCount: number, totalDuration: number, createdAt: any }>> } };
+export type IDashboardQueryQuery = { __typename?: 'Query', dashboard: { __typename?: 'Dashboard', operationsStats: Array<{ __typename?: 'Command', name: string, totalCount: number, maxDuration: number }>, topCollections: Array<{ __typename?: 'Command', name: string, totalCount: number, maxDuration: number }>, mongodbLatestLogs: Array<{ __typename?: 'Log', id: string, collection: string, operation: string, appName: Maybe<string>, sourceName: string, command: string, commandExcerpt: string, duration: number, createdAt: any }>, mongodbLatestControllers: Maybe<Array<{ __typename?: 'Controller', id: string, action: string, name: string, path: string, logsCount: number, totalDuration: number, createdAt: any }>>, latestSidekiqWorkers: Maybe<Array<{ __typename?: 'SidekiqWorker', id: string, jid: string, worker: string, queue: string, logsCount: number, totalDuration: number, createdAt: any }>> } };
 
 export type IDashboardLatestLogsQueryQueryVariables = {};
 
@@ -518,7 +723,7 @@ export type ILatestLogsQueryVariables = {
 };
 
 
-export type ILatestLogsQuery = { __typename?: 'Query', mongodbLogs: { __typename?: 'Logs', currentPage: Maybe<number>, previousPage: Maybe<number>, nextPage: Maybe<number>, totalItems: Maybe<number>, totalPages: Maybe<number>, nodes: Array<{ __typename?: 'Log', id: string, commandExcerpt: string, command: string, collection: string, operation: string, duration: number, controller: Maybe<{ __typename?: 'Controller', id: string, action: string, name: string, path: string }> }> } };
+export type ILatestLogsQuery = { __typename?: 'Query', mongodbLogs: { __typename?: 'Logs', currentPage: Maybe<number>, previousPage: Maybe<number>, nextPage: Maybe<number>, totalItems: Maybe<number>, totalPages: Maybe<number>, nodes: Array<{ __typename?: 'Log', id: string, commandExcerpt: string, command: string, collection: string, operation: string, duration: number, controller: Maybe<{ __typename?: 'AwesomeController', id: string, action: string, name: string, path: string }> }> } };
 
 export type ILatestLogsWithStatsQueryVariables = {
   controllerId: Maybe<Scalars['Int']>;
@@ -533,7 +738,7 @@ export type ILatestLogsWithStatsQueryVariables = {
 };
 
 
-export type ILatestLogsWithStatsQuery = { __typename?: 'Query', logsWithStats: { __typename?: 'LogsWithStats', collections: Array<string>, operations: Array<string>, sourceNames: Array<string>, totalDuration: number, operationsStats: Array<{ __typename?: 'Stat', name: string, value: number }>, collectionsStats: Array<{ __typename?: 'Stat', name: string, value: number }>, logs: { __typename?: 'Logs', currentPage: Maybe<number>, previousPage: Maybe<number>, nextPage: Maybe<number>, totalItems: Maybe<number>, totalPages: Maybe<number>, nodes: Array<{ __typename?: 'Log', id: string, commandExcerpt: string, command: string, collection: string, operation: string, appName: string, sourceName: string, duration: number, createdAt: any, controller: Maybe<{ __typename?: 'Controller', id: string, action: string, name: string, path: string }> }> } } };
+export type ILatestLogsWithStatsQuery = { __typename?: 'Query', logsWithStats: { __typename?: 'LogsWithStats', collections: Array<string>, operations: Array<string>, sourceNames: Array<string>, totalDuration: number, operationsStats: Array<{ __typename?: 'Stat', name: string, value: number }>, collectionsStats: Array<{ __typename?: 'Stat', name: string, value: number }>, logs: { __typename?: 'Logs', currentPage: Maybe<number>, previousPage: Maybe<number>, nextPage: Maybe<number>, totalItems: Maybe<number>, totalPages: Maybe<number>, nodes: Array<{ __typename?: 'Log', id: string, commandExcerpt: string, command: string, collection: string, operation: string, appName: Maybe<string>, sourceName: string, duration: number, createdAt: any, controller: Maybe<{ __typename?: 'AwesomeController', id: string, action: string, name: string, path: string }> }> } } };
 
 export type IGlobalStatsQueryVariables = {
   collections: Maybe<Array<Scalars['String']>>;
@@ -548,7 +753,7 @@ export type ILogQueryVariables = {
 };
 
 
-export type ILogQuery = { __typename?: 'Query', mongodbLog: { __typename?: 'Log', id: string, collection: string, collscan: Maybe<boolean>, command: string, commandExcerpt: string, operation: string, appName: string, sourceName: string, sidekiqArgs: Maybe<string>, createdAt: any, duration: number, stacktrace: { __typename?: 'Stacktrace', id: string, stacktrace: string }, explain: Maybe<{ __typename?: 'Explain', id: string, documentsExamined: Maybe<number>, documentsReturned: Maybe<number>, duration: number, keysExamined: Maybe<number>, rejectedPlans: Maybe<number>, usedIndexes: string, stagesCount: Maybe<number>, treeviz: Maybe<string> }>, controller: Maybe<{ __typename?: 'Controller', id: string, action: string, path: string, params: string }>, sidekiqWorker: Maybe<{ __typename?: 'SidekiqWorker', id: string, worker: string, queue: string }> } };
+export type ILogQuery = { __typename?: 'Query', mongodbLog: { __typename?: 'Log', id: string, collection: string, collscan: Maybe<boolean>, command: string, commandExcerpt: string, operation: string, appName: Maybe<string>, sourceName: string, sidekiqArgs: Maybe<string>, createdAt: any, duration: number, stacktrace: { __typename?: 'Stacktrace', id: string, stacktrace: string }, explain: Maybe<{ __typename?: 'Explain', id: string, documentsExamined: Maybe<number>, documentsReturned: Maybe<number>, duration: number, keysExamined: Maybe<number>, rejectedPlans: Maybe<number>, usedIndexes: string, stagesCount: Maybe<number>, treeviz: Maybe<string> }>, controller: Maybe<{ __typename?: 'AwesomeController', id: string, action: string, path: string, params: string }>, sidekiqWorker: Maybe<{ __typename?: 'SidekiqWorker', id: string, worker: string, queue: string }> } };
 
 export type ILatestSidekiqWorkersWithStatsQueryVariables = {
   mode: Maybe<Scalars['String']>;
@@ -568,25 +773,47 @@ export type ISidekiqWorkerQueryVariables = {
 
 export type ISidekiqWorkerQuery = { __typename?: 'Query', sidekiqWorker: { __typename?: 'SidekiqWorker', id: string, worker: string, queue: string, jid: string, params: string, paramsExcerpt: string, logsCount: number, totalDuration: number, minDuration: number, maxDuration: number, avgDuration: number, opsStats: Array<{ __typename?: 'Stat', name: string, value: number }>, collectionsStats: Array<{ __typename?: 'CollectionStats', name: string, stats: Array<{ __typename?: 'Stat', name: string, value: number }> }> } };
 
+export type ILatestSqlQueriesWithStatsQueryVariables = {
+  controllerId: Maybe<Scalars['Int']>;
+  stacktraceId: Maybe<Scalars['Int']>;
+  sidekiqWorkerId: Maybe<Scalars['Int']>;
+  mode: Maybe<Scalars['String']>;
+  limit: Maybe<Scalars['Int']>;
+  page: Maybe<Scalars['Int']>;
+  tables: Maybe<Array<Scalars['String']>>;
+  operations: Maybe<Array<Scalars['String']>>;
+  sourceNames: Maybe<Array<Scalars['String']>>;
+};
+
+
+export type ILatestSqlQueriesWithStatsQuery = { __typename?: 'Query', sqlQueriesWithStats: { __typename?: 'SqlQueriesWithStats', tables: Array<string>, operations: Array<string>, sourceNames: Array<string>, totalDuration: number, operationsStats: Array<{ __typename?: 'Stat', name: string, value: number }>, tablesStats: Array<{ __typename?: 'Stat', name: string, value: number }>, sqlQueries: { __typename?: 'SqlQueries', currentPage: Maybe<number>, previousPage: Maybe<number>, nextPage: Maybe<number>, totalItems: Maybe<number>, totalPages: Maybe<number>, nodes: Array<{ __typename?: 'SqlQuery', id: string, queryExcerpt: string, query: string, tableName: string, schemaName: string, operation: string, appName: string, sourceName: string, duration: number, createdAt: any, controller: Maybe<{ __typename?: 'AwesomeController', id: string, action: string, name: string, path: string }> }> } } };
+
+export type ISqlQueryQueryVariables = {
+  id: Scalars['Int'];
+};
+
+
+export type ISqlQueryQuery = { __typename?: 'Query', sqlQuery: { __typename?: 'SqlQuery', id: string, tableName: string, schemaName: string, query: string, queryExcerpt: string, operation: string, appName: string, sourceName: string, sidekiqArgs: Maybe<string>, createdAt: any, duration: number, stacktrace: { __typename?: 'Stacktrace', id: string, stacktrace: string }, sqlExplain: Maybe<{ __typename?: 'SqlExplain', id: string, treeviz: Maybe<string>, startupCost: number, totalCost: number, rows: number, width: number, actualStartupTime: number, actualTotalTime: number, actualRows: number, actualLoops: number, seqScans: number }>, controller: Maybe<{ __typename?: 'AwesomeController', id: string, action: string, path: string, params: string }>, sidekiqWorker: Maybe<{ __typename?: 'SidekiqWorker', id: string, worker: string, queue: string }> } };
+
 export type ILatestStacktracesQueryVariables = {
   limit: Maybe<Scalars['Int']>;
   page: Maybe<Scalars['Int']>;
 };
 
 
-export type ILatestStacktracesQuery = { __typename?: 'Query', mongodbStacktraces: { __typename?: 'Stacktraces', currentPage: Maybe<number>, previousPage: Maybe<number>, nextPage: Maybe<number>, totalItems: Maybe<number>, totalPages: Maybe<number>, nodes: Array<{ __typename?: 'Stacktrace', id: string, stacktrace: string, stacktraceExcerpt: Maybe<string>, logsCount: Maybe<number>, minDuration: Maybe<number>, maxDuration: Maybe<number>, avgDuration: Maybe<number> }> } };
+export type ILatestStacktracesQuery = { __typename?: 'Query', stacktraces: { __typename?: 'Stacktraces', currentPage: Maybe<number>, previousPage: Maybe<number>, nextPage: Maybe<number>, totalItems: Maybe<number>, totalPages: Maybe<number>, nodes: Array<{ __typename?: 'Stacktrace', id: string, stacktrace: string, stacktraceExcerpt: Maybe<string>, logsCount: Maybe<number>, minDuration: Maybe<number>, maxDuration: Maybe<number>, avgDuration: Maybe<number>, sqlQueriesCount: Maybe<number>, sqlQueriesMinDuration: Maybe<number>, sqlQueriesMaxDuration: Maybe<number>, sqlQueriesAvgDuration: Maybe<number> }> } };
 
 export type IMongodbStacktraceQueryVariables = {
   id: Scalars['Int'];
 };
 
 
-export type IMongodbStacktraceQuery = { __typename?: 'Query', mongodbStacktrace: { __typename?: 'Stacktrace', id: string, stacktrace: string, stacktraceExcerpt: Maybe<string>, logsCount: Maybe<number>, minDuration: Maybe<number>, maxDuration: Maybe<number>, avgDuration: Maybe<number>, sourcesStats: Array<{ __typename?: 'Stat', name: string, value: number }> } };
+export type IMongodbStacktraceQuery = { __typename?: 'Query', mongodbStacktrace: { __typename?: 'Stacktrace', id: string, stacktrace: string, stacktraceExcerpt: Maybe<string>, logsCount: Maybe<number>, minDuration: Maybe<number>, maxDuration: Maybe<number>, avgDuration: Maybe<number>, sqlQueriesCount: Maybe<number>, sqlQueriesMinDuration: Maybe<number>, sqlQueriesMaxDuration: Maybe<number>, sqlQueriesAvgDuration: Maybe<number>, sourcesStats: Array<{ __typename?: 'Stat', name: string, value: number }>, sqlQueriesSourcesStats: Array<{ __typename?: 'Stat', name: string, value: number }> } };
 
 
 export const LatestControllersDocument = gql`
     query LatestControllers($limit: Int, $page: Int, $names: [String!]) {
-  mongodbControllers(limit: $limit, page: $page, names: $names) {
+  controllers(limit: $limit, page: $page, names: $names) {
     currentPage
     previousPage
     nextPage
@@ -599,6 +826,8 @@ export const LatestControllersDocument = gql`
       path
       logsCount
       totalDuration
+      sqlTotalDuration
+      sqlQueriesCount
     }
   }
 }
@@ -650,9 +879,9 @@ export function useLatestControllersLazyQuery(baseOptions?: ApolloReactHooks.Laz
 export type LatestControllersQueryHookResult = ReturnType<typeof useLatestControllersQuery>;
 export type LatestControllersLazyQueryHookResult = ReturnType<typeof useLatestControllersLazyQuery>;
 export type LatestControllersQueryResult = ApolloReactCommon.QueryResult<ILatestControllersQuery, ILatestControllersQueryVariables>;
-export const MongoDbControllerDocument = gql`
-    query MongoDBController($id: Int!) {
-  mongodbController(id: $id) {
+export const ControllerDocument = gql`
+    query Controller($id: Int!) {
+  controller(id: $id) {
     id
     name
     action
@@ -662,12 +891,25 @@ export const MongoDbControllerDocument = gql`
     logsCount
     sessionId
     totalDuration
+    sqlTotalDuration
+    sqlQueriesCount
     collscans
     opsStats {
       name
       value
     }
+    sqlOpsStats {
+      name
+      value
+    }
     collectionsStats {
+      name
+      stats {
+        name
+        value
+      }
+    }
+    tablesStats {
       name
       stats {
         name
@@ -679,54 +921,54 @@ export const MongoDbControllerDocument = gql`
   }
 }
     `;
-export type MongoDbControllerComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<IMongoDbControllerQuery, IMongoDbControllerQueryVariables>, 'query'> & ({ variables: IMongoDbControllerQueryVariables; skip?: boolean; } | { skip: boolean; });
+export type ControllerComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<IControllerQuery, IControllerQueryVariables>, 'query'> & ({ variables: IControllerQueryVariables; skip?: boolean; } | { skip: boolean; });
 
-    export const MongoDbControllerComponent = (props: MongoDbControllerComponentProps) => (
-      <ApolloReactComponents.Query<IMongoDbControllerQuery, IMongoDbControllerQueryVariables> query={MongoDbControllerDocument} {...props} />
+    export const ControllerComponent = (props: ControllerComponentProps) => (
+      <ApolloReactComponents.Query<IControllerQuery, IControllerQueryVariables> query={ControllerDocument} {...props} />
     );
     
-export type IMongoDbControllerProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<IMongoDbControllerQuery, IMongoDbControllerQueryVariables>
+export type IControllerProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<IControllerQuery, IControllerQueryVariables>
     } & TChildProps;
-export function withMongoDbController<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+export function withController<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
   TProps,
-  IMongoDbControllerQuery,
-  IMongoDbControllerQueryVariables,
-  IMongoDbControllerProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, IMongoDbControllerQuery, IMongoDbControllerQueryVariables, IMongoDbControllerProps<TChildProps, TDataName>>(MongoDbControllerDocument, {
-      alias: 'mongoDbController',
+  IControllerQuery,
+  IControllerQueryVariables,
+  IControllerProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, IControllerQuery, IControllerQueryVariables, IControllerProps<TChildProps, TDataName>>(ControllerDocument, {
+      alias: 'controller',
       ...operationOptions
     });
 };
 
 /**
- * __useMongoDbControllerQuery__
+ * __useControllerQuery__
  *
- * To run a query within a React component, call `useMongoDbControllerQuery` and pass it any options that fit your needs.
- * When your component renders, `useMongoDbControllerQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useControllerQuery` and pass it any options that fit your needs.
+ * When your component renders, `useControllerQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useMongoDbControllerQuery({
+ * const { data, loading, error } = useControllerQuery({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useMongoDbControllerQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<IMongoDbControllerQuery, IMongoDbControllerQueryVariables>) {
-        return ApolloReactHooks.useQuery<IMongoDbControllerQuery, IMongoDbControllerQueryVariables>(MongoDbControllerDocument, baseOptions);
+export function useControllerQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<IControllerQuery, IControllerQueryVariables>) {
+        return ApolloReactHooks.useQuery<IControllerQuery, IControllerQueryVariables>(ControllerDocument, baseOptions);
       }
-export function useMongoDbControllerLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<IMongoDbControllerQuery, IMongoDbControllerQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<IMongoDbControllerQuery, IMongoDbControllerQueryVariables>(MongoDbControllerDocument, baseOptions);
+export function useControllerLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<IControllerQuery, IControllerQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<IControllerQuery, IControllerQueryVariables>(ControllerDocument, baseOptions);
         }
-export type MongoDbControllerQueryHookResult = ReturnType<typeof useMongoDbControllerQuery>;
-export type MongoDbControllerLazyQueryHookResult = ReturnType<typeof useMongoDbControllerLazyQuery>;
-export type MongoDbControllerQueryResult = ApolloReactCommon.QueryResult<IMongoDbControllerQuery, IMongoDbControllerQueryVariables>;
-export const MongoDbControllerLogsDocument = gql`
-    query MongoDBControllerLogs($id: Int!, $logsPage: Int) {
-  mongodbController(id: $id, logsPage: $logsPage) {
+export type ControllerQueryHookResult = ReturnType<typeof useControllerQuery>;
+export type ControllerLazyQueryHookResult = ReturnType<typeof useControllerLazyQuery>;
+export type ControllerQueryResult = ApolloReactCommon.QueryResult<IControllerQuery, IControllerQueryVariables>;
+export const AwesomeControllerLogsDocument = gql`
+    query AwesomeControllerLogs($id: Int!, $logsPage: Int) {
+  controller(id: $id, logsPage: $logsPage) {
     logs @connection(key: $logsPage) {
       currentPage
       previousPage
@@ -745,52 +987,120 @@ export const MongoDbControllerLogsDocument = gql`
   }
 }
     `;
-export type MongoDbControllerLogsComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<IMongoDbControllerLogsQuery, IMongoDbControllerLogsQueryVariables>, 'query'> & ({ variables: IMongoDbControllerLogsQueryVariables; skip?: boolean; } | { skip: boolean; });
+export type AwesomeControllerLogsComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<IAwesomeControllerLogsQuery, IAwesomeControllerLogsQueryVariables>, 'query'> & ({ variables: IAwesomeControllerLogsQueryVariables; skip?: boolean; } | { skip: boolean; });
 
-    export const MongoDbControllerLogsComponent = (props: MongoDbControllerLogsComponentProps) => (
-      <ApolloReactComponents.Query<IMongoDbControllerLogsQuery, IMongoDbControllerLogsQueryVariables> query={MongoDbControllerLogsDocument} {...props} />
+    export const AwesomeControllerLogsComponent = (props: AwesomeControllerLogsComponentProps) => (
+      <ApolloReactComponents.Query<IAwesomeControllerLogsQuery, IAwesomeControllerLogsQueryVariables> query={AwesomeControllerLogsDocument} {...props} />
     );
     
-export type IMongoDbControllerLogsProps<TChildProps = {}, TDataName extends string = 'data'> = {
-      [key in TDataName]: ApolloReactHoc.DataValue<IMongoDbControllerLogsQuery, IMongoDbControllerLogsQueryVariables>
+export type IAwesomeControllerLogsProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<IAwesomeControllerLogsQuery, IAwesomeControllerLogsQueryVariables>
     } & TChildProps;
-export function withMongoDbControllerLogs<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+export function withAwesomeControllerLogs<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
   TProps,
-  IMongoDbControllerLogsQuery,
-  IMongoDbControllerLogsQueryVariables,
-  IMongoDbControllerLogsProps<TChildProps, TDataName>>) {
-    return ApolloReactHoc.withQuery<TProps, IMongoDbControllerLogsQuery, IMongoDbControllerLogsQueryVariables, IMongoDbControllerLogsProps<TChildProps, TDataName>>(MongoDbControllerLogsDocument, {
-      alias: 'mongoDbControllerLogs',
+  IAwesomeControllerLogsQuery,
+  IAwesomeControllerLogsQueryVariables,
+  IAwesomeControllerLogsProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, IAwesomeControllerLogsQuery, IAwesomeControllerLogsQueryVariables, IAwesomeControllerLogsProps<TChildProps, TDataName>>(AwesomeControllerLogsDocument, {
+      alias: 'awesomeControllerLogs',
       ...operationOptions
     });
 };
 
 /**
- * __useMongoDbControllerLogsQuery__
+ * __useAwesomeControllerLogsQuery__
  *
- * To run a query within a React component, call `useMongoDbControllerLogsQuery` and pass it any options that fit your needs.
- * When your component renders, `useMongoDbControllerLogsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useAwesomeControllerLogsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAwesomeControllerLogsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useMongoDbControllerLogsQuery({
+ * const { data, loading, error } = useAwesomeControllerLogsQuery({
  *   variables: {
  *      id: // value for 'id'
  *      logsPage: // value for 'logsPage'
  *   },
  * });
  */
-export function useMongoDbControllerLogsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<IMongoDbControllerLogsQuery, IMongoDbControllerLogsQueryVariables>) {
-        return ApolloReactHooks.useQuery<IMongoDbControllerLogsQuery, IMongoDbControllerLogsQueryVariables>(MongoDbControllerLogsDocument, baseOptions);
+export function useAwesomeControllerLogsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<IAwesomeControllerLogsQuery, IAwesomeControllerLogsQueryVariables>) {
+        return ApolloReactHooks.useQuery<IAwesomeControllerLogsQuery, IAwesomeControllerLogsQueryVariables>(AwesomeControllerLogsDocument, baseOptions);
       }
-export function useMongoDbControllerLogsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<IMongoDbControllerLogsQuery, IMongoDbControllerLogsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<IMongoDbControllerLogsQuery, IMongoDbControllerLogsQueryVariables>(MongoDbControllerLogsDocument, baseOptions);
+export function useAwesomeControllerLogsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<IAwesomeControllerLogsQuery, IAwesomeControllerLogsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<IAwesomeControllerLogsQuery, IAwesomeControllerLogsQueryVariables>(AwesomeControllerLogsDocument, baseOptions);
         }
-export type MongoDbControllerLogsQueryHookResult = ReturnType<typeof useMongoDbControllerLogsQuery>;
-export type MongoDbControllerLogsLazyQueryHookResult = ReturnType<typeof useMongoDbControllerLogsLazyQuery>;
-export type MongoDbControllerLogsQueryResult = ApolloReactCommon.QueryResult<IMongoDbControllerLogsQuery, IMongoDbControllerLogsQueryVariables>;
+export type AwesomeControllerLogsQueryHookResult = ReturnType<typeof useAwesomeControllerLogsQuery>;
+export type AwesomeControllerLogsLazyQueryHookResult = ReturnType<typeof useAwesomeControllerLogsLazyQuery>;
+export type AwesomeControllerLogsQueryResult = ApolloReactCommon.QueryResult<IAwesomeControllerLogsQuery, IAwesomeControllerLogsQueryVariables>;
+export const AwesomeControllerSqlQueriesDocument = gql`
+    query AwesomeControllerSqlQueries($id: Int!, $sqlQueriesPage: Int) {
+  controller(id: $id, sqlQueriesPage: $sqlQueriesPage) {
+    sqlQueries @connection(key: $sqlQueriesPage) {
+      currentPage
+      previousPage
+      nextPage
+      totalItems
+      totalPages
+      nodes {
+        id
+        tableName
+        schemaName
+        query
+        queryExcerpt
+        operation
+        duration
+      }
+    }
+  }
+}
+    `;
+export type AwesomeControllerSqlQueriesComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<IAwesomeControllerSqlQueriesQuery, IAwesomeControllerSqlQueriesQueryVariables>, 'query'> & ({ variables: IAwesomeControllerSqlQueriesQueryVariables; skip?: boolean; } | { skip: boolean; });
+
+    export const AwesomeControllerSqlQueriesComponent = (props: AwesomeControllerSqlQueriesComponentProps) => (
+      <ApolloReactComponents.Query<IAwesomeControllerSqlQueriesQuery, IAwesomeControllerSqlQueriesQueryVariables> query={AwesomeControllerSqlQueriesDocument} {...props} />
+    );
+    
+export type IAwesomeControllerSqlQueriesProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<IAwesomeControllerSqlQueriesQuery, IAwesomeControllerSqlQueriesQueryVariables>
+    } & TChildProps;
+export function withAwesomeControllerSqlQueries<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  IAwesomeControllerSqlQueriesQuery,
+  IAwesomeControllerSqlQueriesQueryVariables,
+  IAwesomeControllerSqlQueriesProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, IAwesomeControllerSqlQueriesQuery, IAwesomeControllerSqlQueriesQueryVariables, IAwesomeControllerSqlQueriesProps<TChildProps, TDataName>>(AwesomeControllerSqlQueriesDocument, {
+      alias: 'awesomeControllerSqlQueries',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useAwesomeControllerSqlQueriesQuery__
+ *
+ * To run a query within a React component, call `useAwesomeControllerSqlQueriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAwesomeControllerSqlQueriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAwesomeControllerSqlQueriesQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *      sqlQueriesPage: // value for 'sqlQueriesPage'
+ *   },
+ * });
+ */
+export function useAwesomeControllerSqlQueriesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<IAwesomeControllerSqlQueriesQuery, IAwesomeControllerSqlQueriesQueryVariables>) {
+        return ApolloReactHooks.useQuery<IAwesomeControllerSqlQueriesQuery, IAwesomeControllerSqlQueriesQueryVariables>(AwesomeControllerSqlQueriesDocument, baseOptions);
+      }
+export function useAwesomeControllerSqlQueriesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<IAwesomeControllerSqlQueriesQuery, IAwesomeControllerSqlQueriesQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<IAwesomeControllerSqlQueriesQuery, IAwesomeControllerSqlQueriesQueryVariables>(AwesomeControllerSqlQueriesDocument, baseOptions);
+        }
+export type AwesomeControllerSqlQueriesQueryHookResult = ReturnType<typeof useAwesomeControllerSqlQueriesQuery>;
+export type AwesomeControllerSqlQueriesLazyQueryHookResult = ReturnType<typeof useAwesomeControllerSqlQueriesLazyQuery>;
+export type AwesomeControllerSqlQueriesQueryResult = ApolloReactCommon.QueryResult<IAwesomeControllerSqlQueriesQuery, IAwesomeControllerSqlQueriesQueryVariables>;
 export const DashboardQueryDocument = gql`
     query DashboardQuery {
   dashboard {
@@ -1411,9 +1721,195 @@ export function useSidekiqWorkerLazyQuery(baseOptions?: ApolloReactHooks.LazyQue
 export type SidekiqWorkerQueryHookResult = ReturnType<typeof useSidekiqWorkerQuery>;
 export type SidekiqWorkerLazyQueryHookResult = ReturnType<typeof useSidekiqWorkerLazyQuery>;
 export type SidekiqWorkerQueryResult = ApolloReactCommon.QueryResult<ISidekiqWorkerQuery, ISidekiqWorkerQueryVariables>;
+export const LatestSqlQueriesWithStatsDocument = gql`
+    query LatestSqlQueriesWithStats($controllerId: Int, $stacktraceId: Int, $sidekiqWorkerId: Int, $mode: String, $limit: Int, $page: Int, $tables: [String!], $operations: [String!], $sourceNames: [String!]) {
+  sqlQueriesWithStats(controllerId: $controllerId, stacktraceId: $stacktraceId, sidekiqWorkerId: $sidekiqWorkerId, mode: $mode, limit: $limit, page: $page, tables: $tables, operations: $operations, sourceNames: $sourceNames) {
+    tables
+    operations
+    sourceNames
+    totalDuration
+    operationsStats {
+      name
+      value
+    }
+    tablesStats {
+      name
+      value
+    }
+    sqlQueries {
+      currentPage
+      previousPage
+      nextPage
+      totalItems
+      totalPages
+      nodes {
+        id
+        queryExcerpt
+        query
+        tableName
+        schemaName
+        operation
+        appName
+        sourceName
+        duration
+        createdAt
+        controller {
+          id
+          action
+          name
+          path
+        }
+      }
+    }
+  }
+}
+    `;
+export type LatestSqlQueriesWithStatsComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<ILatestSqlQueriesWithStatsQuery, ILatestSqlQueriesWithStatsQueryVariables>, 'query'>;
+
+    export const LatestSqlQueriesWithStatsComponent = (props: LatestSqlQueriesWithStatsComponentProps) => (
+      <ApolloReactComponents.Query<ILatestSqlQueriesWithStatsQuery, ILatestSqlQueriesWithStatsQueryVariables> query={LatestSqlQueriesWithStatsDocument} {...props} />
+    );
+    
+export type ILatestSqlQueriesWithStatsProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<ILatestSqlQueriesWithStatsQuery, ILatestSqlQueriesWithStatsQueryVariables>
+    } & TChildProps;
+export function withLatestSqlQueriesWithStats<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  ILatestSqlQueriesWithStatsQuery,
+  ILatestSqlQueriesWithStatsQueryVariables,
+  ILatestSqlQueriesWithStatsProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, ILatestSqlQueriesWithStatsQuery, ILatestSqlQueriesWithStatsQueryVariables, ILatestSqlQueriesWithStatsProps<TChildProps, TDataName>>(LatestSqlQueriesWithStatsDocument, {
+      alias: 'latestSqlQueriesWithStats',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useLatestSqlQueriesWithStatsQuery__
+ *
+ * To run a query within a React component, call `useLatestSqlQueriesWithStatsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLatestSqlQueriesWithStatsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLatestSqlQueriesWithStatsQuery({
+ *   variables: {
+ *      controllerId: // value for 'controllerId'
+ *      stacktraceId: // value for 'stacktraceId'
+ *      sidekiqWorkerId: // value for 'sidekiqWorkerId'
+ *      mode: // value for 'mode'
+ *      limit: // value for 'limit'
+ *      page: // value for 'page'
+ *      tables: // value for 'tables'
+ *      operations: // value for 'operations'
+ *      sourceNames: // value for 'sourceNames'
+ *   },
+ * });
+ */
+export function useLatestSqlQueriesWithStatsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ILatestSqlQueriesWithStatsQuery, ILatestSqlQueriesWithStatsQueryVariables>) {
+        return ApolloReactHooks.useQuery<ILatestSqlQueriesWithStatsQuery, ILatestSqlQueriesWithStatsQueryVariables>(LatestSqlQueriesWithStatsDocument, baseOptions);
+      }
+export function useLatestSqlQueriesWithStatsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ILatestSqlQueriesWithStatsQuery, ILatestSqlQueriesWithStatsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<ILatestSqlQueriesWithStatsQuery, ILatestSqlQueriesWithStatsQueryVariables>(LatestSqlQueriesWithStatsDocument, baseOptions);
+        }
+export type LatestSqlQueriesWithStatsQueryHookResult = ReturnType<typeof useLatestSqlQueriesWithStatsQuery>;
+export type LatestSqlQueriesWithStatsLazyQueryHookResult = ReturnType<typeof useLatestSqlQueriesWithStatsLazyQuery>;
+export type LatestSqlQueriesWithStatsQueryResult = ApolloReactCommon.QueryResult<ILatestSqlQueriesWithStatsQuery, ILatestSqlQueriesWithStatsQueryVariables>;
+export const SqlQueryDocument = gql`
+    query SqlQuery($id: Int!) {
+  sqlQuery(id: $id) {
+    id
+    tableName
+    schemaName
+    query
+    queryExcerpt
+    operation
+    appName
+    sourceName
+    sidekiqArgs
+    stacktrace {
+      id
+      stacktrace
+    }
+    sqlExplain {
+      id
+      treeviz
+      startupCost
+      totalCost
+      rows
+      width
+      actualStartupTime
+      actualTotalTime
+      actualRows
+      actualLoops
+      seqScans
+    }
+    controller {
+      id
+      action
+      path
+      params
+    }
+    sidekiqWorker {
+      id
+      worker
+      queue
+    }
+    createdAt
+    duration
+  }
+}
+    `;
+export type SqlQueryComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<ISqlQueryQuery, ISqlQueryQueryVariables>, 'query'> & ({ variables: ISqlQueryQueryVariables; skip?: boolean; } | { skip: boolean; });
+
+    export const SqlQueryComponent = (props: SqlQueryComponentProps) => (
+      <ApolloReactComponents.Query<ISqlQueryQuery, ISqlQueryQueryVariables> query={SqlQueryDocument} {...props} />
+    );
+    
+export type ISqlQueryProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<ISqlQueryQuery, ISqlQueryQueryVariables>
+    } & TChildProps;
+export function withSqlQuery<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  ISqlQueryQuery,
+  ISqlQueryQueryVariables,
+  ISqlQueryProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, ISqlQueryQuery, ISqlQueryQueryVariables, ISqlQueryProps<TChildProps, TDataName>>(SqlQueryDocument, {
+      alias: 'sqlQuery',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useSqlQueryQuery__
+ *
+ * To run a query within a React component, call `useSqlQueryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSqlQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSqlQueryQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useSqlQueryQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ISqlQueryQuery, ISqlQueryQueryVariables>) {
+        return ApolloReactHooks.useQuery<ISqlQueryQuery, ISqlQueryQueryVariables>(SqlQueryDocument, baseOptions);
+      }
+export function useSqlQueryLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ISqlQueryQuery, ISqlQueryQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<ISqlQueryQuery, ISqlQueryQueryVariables>(SqlQueryDocument, baseOptions);
+        }
+export type SqlQueryQueryHookResult = ReturnType<typeof useSqlQueryQuery>;
+export type SqlQueryLazyQueryHookResult = ReturnType<typeof useSqlQueryLazyQuery>;
+export type SqlQueryQueryResult = ApolloReactCommon.QueryResult<ISqlQueryQuery, ISqlQueryQueryVariables>;
 export const LatestStacktracesDocument = gql`
     query LatestStacktraces($limit: Int, $page: Int) {
-  mongodbStacktraces(limit: $limit, page: $page) {
+  stacktraces(limit: $limit, page: $page) {
     currentPage
     previousPage
     nextPage
@@ -1427,6 +1923,10 @@ export const LatestStacktracesDocument = gql`
       minDuration
       maxDuration
       avgDuration
+      sqlQueriesCount
+      sqlQueriesMinDuration
+      sqlQueriesMaxDuration
+      sqlQueriesAvgDuration
     }
   }
 }
@@ -1487,7 +1987,15 @@ export const MongodbStacktraceDocument = gql`
     minDuration
     maxDuration
     avgDuration
+    sqlQueriesCount
+    sqlQueriesMinDuration
+    sqlQueriesMaxDuration
+    sqlQueriesAvgDuration
     sourcesStats {
+      name
+      value
+    }
+    sqlQueriesSourcesStats {
       name
       value
     }

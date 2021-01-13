@@ -71,7 +71,7 @@ export default function SidekiqWorkers() {
   };
 
   return (
-    <>
+    <div className="px-5 py-4 bg-white shadow-md rounded-lg">
       <PageTitle title="Sidekiq Workers" />
       <Label horizontal color="teal">
         Total Jobs Count
@@ -174,6 +174,6 @@ export default function SidekiqWorkers() {
           </Table.Footer>
         </Table>
       </div>
-    </>
+    </div>
   );
 }

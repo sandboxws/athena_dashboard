@@ -31,6 +31,13 @@ export default class TopMenu extends Component {
           />
           <Menu.Item
             as={Link}
+            name="SQL queries"
+            to="/sql_queries"
+            active={activeItem === "sql_queries"}
+            onClick={this.handleItemClick}
+          />
+          <Menu.Item
+            as={Link}
             name="controllers"
             to="/controllers"
             active={activeItem === "controllers"}

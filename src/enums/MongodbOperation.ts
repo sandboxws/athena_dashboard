@@ -11,8 +11,8 @@ export enum MongodbOperation {
 }
 
 export enum MongodbOperationColor {
-  find = "orange",
-  insert = "purple",
+  find = "purple",
+  insert = "orange",
   update = "teal",
   distinct = "yellow",
   delete = "red",

@@ -7,10 +7,13 @@ import {
   PaginationProps,
   Table,
 } from "semantic-ui-react";
-import Log from ".././../common/logs/Log";
 import PageTitle from "../../common/PageTitle";
-import { useLatestLogsWithStatsQuery, ILog } from "../../../generated/graphql";
+import {
+  ISqlQuery,
+  useLatestSqlQueriesWithStatsQuery,
+} from "../../../generated/graphql";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import SqlQuery from "./components/SqlQuery";
 
 interface State {
   activePage?: string | number | undefined;
@@ -20,7 +23,7 @@ interface State {
   showFirstAndLastNav?: boolean;
   showPreviousAndNextNav?: boolean;
   totalPages?: number;
-  selectedCollections?: string[];
+  selectedTables?: string[];
   selectedOperations?: string[];
   selectedSourceNames?: string[];
 }
@@ -31,17 +34,17 @@ const initialState = {
   showFirstAndLastNav: true,
   showPreviousAndNextNav: true,
   totalPages: 0,
-  selectedCollections: [],
+  selectedTables: [],
   selectedOperations: [],
   selectedSourceNames: [],
 } as State;
 
-export default function Logs() {
+export default function SqlQueries() {
   const [state, setState] = useState(initialState);
 
-  const { loading, error, data } = useLatestLogsWithStatsQuery({
+  const { loading, error, data } = useLatestSqlQueriesWithStatsQuery({
     variables: {
-      collections: state.selectedCollections as string[],
+      tables: state.selectedTables as string[],
       controllerId: null,
       limit: 25,
       mode: "latest",
@@ -56,14 +59,14 @@ export default function Logs() {
   if (loading) return <div>Fetching data</div>;
   if (error) return <div>Error: {error}</div>;
 
-  const logsWithStats = data?.logsWithStats;
-  const logs = logsWithStats?.logs.nodes as ILog[];
-  const totalDuration = logsWithStats?.totalDuration || 0;
-  const totalPages = logsWithStats?.logs.totalPages || 0;
-  const totalItems = logsWithStats?.logs.totalItems || 0;
-  const collections = logsWithStats?.collections;
-  const operations = logsWithStats?.operations;
-  const sourceNames = logsWithStats?.sourceNames;
+  const sqlQueriesWithStats = data?.sqlQueriesWithStats;
+  const sqlQueries = sqlQueriesWithStats?.sqlQueries.nodes as ISqlQuery[];
+  const totalDuration = sqlQueriesWithStats?.totalDuration || 0;
+  const totalPages = sqlQueriesWithStats?.sqlQueries.totalPages || 0;
+  const totalItems = sqlQueriesWithStats?.sqlQueries.totalItems || 0;
+  const tables = sqlQueriesWithStats?.tables;
+  const operations = sqlQueriesWithStats?.operations;
+  const sourceNames = sqlQueriesWithStats?.sourceNames;
 
   const handlePaginationChange = (
     _e: SyntheticEvent,
@@ -74,7 +77,7 @@ export default function Logs() {
 
   return (
     <div className="px-5 py-4 bg-white shadow-md rounded-lg">
-      <PageTitle title="Queries" />
+      <PageTitle title="SQL Queries" />
       <Label
         className="mr-3"
         horizontal
@@ -100,22 +103,22 @@ export default function Logs() {
       <div className="mt-10">
         <Dropdown
           className="mr-5"
-          options={collections?.map((collection) => ({
+          options={tables?.map((collection) => ({
             key: collection,
             value: collection,
             text: collection,
           }))}
-          placeholder="Filter collections"
+          placeholder="Filter tables"
           search
           clearable
           multiple
           selection
-          defaultValue={state.selectedCollections}
+          defaultValue={state.selectedTables}
           onChange={(_e: SyntheticEvent, optionsObj: DropdownProps) =>
             setState({
               ...state,
               activePage: 1,
-              selectedCollections: optionsObj.value as string[],
+              selectedTables: optionsObj.value as string[],
             })
           }
         />
@@ -170,7 +173,7 @@ export default function Logs() {
               <Table.HeaderCell>Operation</Table.HeaderCell>
               <Table.HeaderCell>App</Table.HeaderCell>
               <Table.HeaderCell>Source</Table.HeaderCell>
-              <Table.HeaderCell>Command</Table.HeaderCell>
+              <Table.HeaderCell>Query</Table.HeaderCell>
               <Table.HeaderCell>Duration</Table.HeaderCell>
               <Table.HeaderCell>Date</Table.HeaderCell>
               <Table.HeaderCell width="one">…</Table.HeaderCell>
@@ -178,8 +181,8 @@ export default function Logs() {
           </Table.Header>
 
           <Table.Body>
-            {logs?.map((log) => (
-              <Log key={log.id} log={log} />
+            {sqlQueries?.map((log) => (
+              <SqlQuery key={log.id} sqlQuery={log} />
             ))}
           </Table.Body>
           <Table.Footer>

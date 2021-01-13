@@ -39,27 +39,31 @@ function Charts(props: Props) {
 
   return (
     <>
-      <div className="flex flex-wrap mt-10 charts">
-        <div className="w-1/2 pt-3 pr-3">
-          <Divider horizontal>Queries Total Count</Divider>
-          <BarChart
-            width={650}
-            height={300}
-            data={operationsData}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
-            barSize={20}
-          >
-            <XAxis
-              dataKey="name"
-              scale="point"
-              padding={{ left: 10, right: 10 }}
-            />
-            {/* <YAxis label={
+      <div className="mt-10 px-5 py-4 bg-white shadow-md rounded-lg">
+        <h3 className="ml-2 mb-0 pb-2 text-purple-500 border-b border-gray-200">
+          Charts
+        </h3>
+        <div className="flex flex-wrap charts">
+          <div className="w-1/2 pt-3 pr-3">
+            <Divider horizontal>Queries Total Count</Divider>
+            <BarChart
+              width={650}
+              height={300}
+              data={operationsData}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+              barSize={20}
+            >
+              <XAxis
+                dataKey="name"
+                scale="point"
+                padding={{ left: 10, right: 10 }}
+              />
+              {/* <YAxis label={
             <Text
               x={0}
               y={0}
@@ -70,36 +74,36 @@ function Charts(props: Props) {
             </Text>
             }
           /> */}
-            <Tooltip />
-            <Legend />
-            <CartesianGrid strokeDasharray="3 3" />
-            <Bar
-              dataKey="totalCount"
-              fill="#B794F4"
-              background={{ fill: "#eee" }}
-            />
-          </BarChart>
-        </div>
-        <div className="w-1/2 pt-3 pr-3">
-          <Divider horizontal>Queries Max Duration</Divider>
-          <BarChart
-            width={650}
-            height={300}
-            data={durationsData}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
-            barSize={20}
-          >
-            <XAxis
-              dataKey="name"
-              scale="point"
-              padding={{ left: 10, right: 10 }}
-            />
-            {/* <YAxis label={
+              <Tooltip />
+              <Legend />
+              <CartesianGrid strokeDasharray="3 3" />
+              <Bar
+                dataKey="totalCount"
+                fill="#B794F4"
+                background={{ fill: "#eee" }}
+              />
+            </BarChart>
+          </div>
+          <div className="w-1/2 pt-3 pr-3">
+            <Divider horizontal>Queries Max Duration</Divider>
+            <BarChart
+              width={650}
+              height={300}
+              data={durationsData}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+              barSize={20}
+            >
+              <XAxis
+                dataKey="name"
+                scale="point"
+                padding={{ left: 10, right: 10 }}
+              />
+              {/* <YAxis label={
             <Text
               x={0}
               y={0}
@@ -111,57 +115,58 @@ function Charts(props: Props) {
             </Text>
             }
           /> */}
-            <Tooltip />
-            <Legend />
-            <CartesianGrid strokeDasharray="3 3" />
-            <Bar
-              dataKey="maxDuration"
-              fill="#F687B3"
-              background={{ fill: "#eee" }}
-            />
-          </BarChart>
-        </div>
-        <div className="w-1/2 pt-3 pr-3">
-          <Divider horizontal>Top Collections - Queries Count</Divider>
-          <RadarChart
-            cx={300}
-            cy={250}
-            outerRadius={150}
-            width={500}
-            height={500}
-            data={collectionsData}
-          >
-            <PolarGrid />
-            <PolarAngleAxis dataKey="name" />
-            <PolarRadiusAxis />
-            <Radar
-              dataKey="totalCount"
-              stroke="#8884d8"
-              fill="#8884d8"
-              fillOpacity={0.6}
-            />
-          </RadarChart>
-        </div>
-        <div className="w-1/2 pt-3 pr-3">
-          <Divider horizontal>Top Collections - Max Duration</Divider>
-          <RadarChart
-            cx={300}
-            cy={250}
-            outerRadius={150}
-            width={500}
-            height={500}
-            data={collectionsData}
-          >
-            <PolarGrid />
-            <PolarAngleAxis dataKey="name" />
-            <PolarRadiusAxis />
-            <Radar
-              dataKey="maxDuration"
-              stroke="#F687B3"
-              fill="#F687B3"
-              fillOpacity={0.6}
-            />
-          </RadarChart>
+              <Tooltip />
+              <Legend />
+              <CartesianGrid strokeDasharray="3 3" />
+              <Bar
+                dataKey="maxDuration"
+                fill="#F687B3"
+                background={{ fill: "#eee" }}
+              />
+            </BarChart>
+          </div>
+          <div className="w-1/2 pt-3 pr-3">
+            <Divider horizontal>Top Collections - Queries Count</Divider>
+            <RadarChart
+              cx={300}
+              cy={250}
+              outerRadius={150}
+              width={500}
+              height={500}
+              data={collectionsData}
+            >
+              <PolarGrid />
+              <PolarAngleAxis dataKey="name" />
+              <PolarRadiusAxis />
+              <Radar
+                dataKey="totalCount"
+                stroke="#8884d8"
+                fill="#8884d8"
+                fillOpacity={0.6}
+              />
+            </RadarChart>
+          </div>
+          <div className="w-1/2 pt-3 pr-3">
+            <Divider horizontal>Top Collections - Max Duration</Divider>
+            <RadarChart
+              cx={300}
+              cy={250}
+              outerRadius={150}
+              width={500}
+              height={500}
+              data={collectionsData}
+            >
+              <PolarGrid />
+              <PolarAngleAxis dataKey="name" />
+              <PolarRadiusAxis />
+              <Radar
+                dataKey="maxDuration"
+                stroke="#F687B3"
+                fill="#F687B3"
+                fillOpacity={0.6}
+              />
+            </RadarChart>
+          </div>
         </div>
       </div>
     </>

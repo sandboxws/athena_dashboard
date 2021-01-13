@@ -17,7 +17,9 @@ export default function PageTitle(props: Props) {
   }
   return (
     <div>
-      <h1 className="text-2xl text-gray-700">{props.title}</h1>
+      <h1 className="pb-2 text-2xl text-purple-500 border-b border-gray-200">
+        {props.title}
+      </h1>
       {subTitle}
     </div>
   );

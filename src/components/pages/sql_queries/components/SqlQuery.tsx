@@ -1,42 +1,45 @@
 import React from "react";
 import { Button, Table, Label } from "semantic-ui-react";
 import { Link } from "react-router-dom";
+import { ISqlQuery } from "../../../../generated/graphql";
 import operationColor from "../../../common/CommandColors";
-import { ILog } from "../../../../generated/graphql";
 import AwesomeAccordion from "../../../common/AwesomeAccordion";
 
 type Props = {
-  log: ILog;
+  sqlQuery: ISqlQuery;
 };
 
-export default function Log(props: Props) {
+export default function SqlQuery(props: Props) {
   const {
     id,
-    collection,
+    tableName,
+    schemaName,
     operation,
-    command,
-    commandExcerpt,
+    appName,
+    sourceName,
+    query,
+    queryExcerpt,
     duration,
-  } = props.log;
+    createdAt,
+  } = props.sqlQuery;
+
   return (
     <Table.Row verticalAlign="middle">
-      <Table.Cell>{collection}</Table.Cell>
+      <Table.Cell>{`${schemaName}.${tableName}`}</Table.Cell>
       <Table.Cell>
         <Label color={operationColor(operation)} horizontal>
           {operation}
         </Label>
       </Table.Cell>
+      <Table.Cell>{appName}</Table.Cell>
+      <Table.Cell>{sourceName}</Table.Cell>
       <Table.Cell>
-        <AwesomeAccordion excerpt={commandExcerpt} jsonContent={command} />
+        <AwesomeAccordion excerpt={queryExcerpt} sqlContent={query} />
       </Table.Cell>
-      <Table.Cell>{duration}</Table.Cell>
+      <Table.Cell>{duration}s</Table.Cell>
+      <Table.Cell>{createdAt}</Table.Cell>
       <Table.Cell>
-        <Button
-          as={Link}
-          size="mini"
-          color={operationColor(operation)}
-          to={`/queries/${id}`}
-        >
+        <Button as={Link} size="mini" color="blue" to={`/sql_queries/${id}`}>
           Inspect
         </Button>
       </Table.Cell>

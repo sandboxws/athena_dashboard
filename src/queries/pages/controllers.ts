@@ -2,7 +2,7 @@ import gql from "graphql-tag";
 
 export const LATEST_CONTROLLERS_GQL = gql`
   query LatestControllers($limit: Int, $page: Int, $names: [String!]) {
-    mongodbControllers(limit: $limit, page: $page, names: $names) {
+    controllers(limit: $limit, page: $page, names: $names) {
       currentPage
       previousPage
       nextPage
@@ -15,14 +15,16 @@ export const LATEST_CONTROLLERS_GQL = gql`
         path
         logsCount
         totalDuration
+        sqlTotalDuration
+        sqlQueriesCount
       }
     }
   }
 `;
 
 export const SHOW_CONTROLLER_GQL = gql`
-  query MongoDBController($id: Int!) {
-    mongodbController(id: $id) {
+  query Controller($id: Int!) {
+    controller(id: $id) {
       id
       name
       action
@@ -32,12 +34,25 @@ export const SHOW_CONTROLLER_GQL = gql`
       logsCount
       sessionId
       totalDuration
+      sqlTotalDuration
+      sqlQueriesCount
       collscans
       opsStats {
         name
         value
       }
+      sqlOpsStats {
+        name
+        value
+      }
       collectionsStats {
+        name
+        stats {
+          name
+          value
+        }
+      }
+      tablesStats {
         name
         stats {
           name
@@ -51,8 +66,8 @@ export const SHOW_CONTROLLER_GQL = gql`
 `;
 
 export const SHOW_CONTROLLER_LOGS_GQL = gql`
-  query MongoDBControllerLogs($id: Int!, $logsPage: Int) {
-    mongodbController(id: $id, logsPage: $logsPage) {
+  query AwesomeControllerLogs($id: Int!, $logsPage: Int) {
+    controller(id: $id, logsPage: $logsPage) {
       logs @connection(key: $logsPage) {
         currentPage
         previousPage
@@ -64,6 +79,29 @@ export const SHOW_CONTROLLER_LOGS_GQL = gql`
           collection
           command
           commandExcerpt
+          operation
+          duration
+        }
+      }
+    }
+  }
+`;
+
+export const SHOW_CONTROLLER_SQL_QUERIES_GQL = gql`
+  query AwesomeControllerSqlQueries($id: Int!, $sqlQueriesPage: Int) {
+    controller(id: $id, sqlQueriesPage: $sqlQueriesPage) {
+      sqlQueries @connection(key: $sqlQueriesPage) {
+        currentPage
+        previousPage
+        nextPage
+        totalItems
+        totalPages
+        nodes {
+          id
+          tableName
+          schemaName
+          query
+          queryExcerpt
           operation
           duration
         }
