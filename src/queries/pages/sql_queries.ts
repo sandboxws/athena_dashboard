@@ -50,6 +50,7 @@ export const LATEST_SQL_QUERIES_WITH_STATS_GQL = gql`
     $controllerId: Int
     $stacktraceId: Int
     $sidekiqWorkerId: Int
+    $delayedJobId: Int
     $mode: String
     $limit: Int
     $page: Int
@@ -61,6 +62,7 @@ export const LATEST_SQL_QUERIES_WITH_STATS_GQL = gql`
       controllerId: $controllerId
       stacktraceId: $stacktraceId
       sidekiqWorkerId: $sidekiqWorkerId
+      delayedJobId: $delayedJobId
       mode: $mode
       limit: $limit
       page: $page

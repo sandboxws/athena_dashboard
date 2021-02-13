@@ -15,6 +15,8 @@ import Stacktraces from "../../pages/stacktraces/Stacktraces";
 import Stacktrace from "../../pages/stacktraces/Stacktrace";
 import SidekiqWorkers from "../../pages/sidekiq_workers/SidekiqWorkers";
 import SidekiqWorker from "../../pages/sidekiq_workers/SidekiqWorker";
+import DelayedJobs from "../../pages/delayed_jobs/DelayedJobs";
+import DelayedJob from "../../pages/delayed_jobs/DelayedJob";
 import "./styles.scss";
 
 function Template() {
@@ -45,6 +47,8 @@ function Template() {
                   path="/sidekiq_workers/:id"
                   component={SidekiqWorker}
                 />
+                <Route exact path="/delayed_jobs" component={DelayedJobs} />
+                <Route exact path="/delayed_jobs/:id" component={DelayedJob} />
               </div>
             </div>
             <div className="m-auto w-64 p-0 mb-5">

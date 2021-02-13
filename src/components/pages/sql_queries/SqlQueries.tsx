@@ -51,6 +51,7 @@ export default function SqlQueries() {
       operations: state.selectedOperations as string[],
       page: state.activePage as number,
       sidekiqWorkerId: null,
+      delayedJobId: null,
       sourceNames: state.selectedSourceNames as string[],
       stacktraceId: null,
     },

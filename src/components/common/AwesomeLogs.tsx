@@ -7,6 +7,7 @@ import DropdownFilter from "./DropdownFilter";
 type Props = {
   controllerId?: number;
   stacktraceId?: number;
+  delayedJobId?: number;
   sidekiqWorkerId?: number;
   limit?: number;
 };
@@ -37,7 +38,13 @@ const initialState = {
 
 export default function AwesomeLogs(props: Props) {
   const [state, setState] = useState(initialState);
-  const { controllerId, stacktraceId, sidekiqWorkerId, limit } = props;
+  const {
+    controllerId,
+    stacktraceId,
+    sidekiqWorkerId,
+    delayedJobId,
+    limit,
+  } = props;
 
   const handlePaginationChange = (
     _e: SyntheticEvent,
@@ -54,6 +61,7 @@ export default function AwesomeLogs(props: Props) {
     operations: state.selectedOperations as string[],
     page: state.activePage as number,
     sidekiqWorkerId: sidekiqWorkerId ?? null,
+    delayedJobId: delayedJobId ?? null,
     sourceNames: state.selectedSourceNames as string[],
     stacktraceId: stacktraceId ?? null,
   };

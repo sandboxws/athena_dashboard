@@ -40,6 +40,7 @@ export default function SqlQuery(props: Props) {
 
   return (
     <>
+      <div className="px-5 py-4 bg-white shadow-md rounded-lg">
       <PageTitle title={`Query #${params.id}`} />
       {sqlQuery.sourceName === "server" ? (
         <Label horizontal>
@@ -74,7 +75,11 @@ export default function SqlQuery(props: Props) {
         ""
       )}
 
+
+      </div>
+
       <Divider horizontal>Stats</Divider>
+      <div className="px-5 py-4 bg-white shadow-md rounded-lg">
       <Table>
         <Table.Body className="bg-gray-100">
           <Table.Row>
@@ -133,6 +138,8 @@ export default function SqlQuery(props: Props) {
           </Table.Row>
         </Table.Body>
       </Table>
+</div>
+
 
       <Divider horizontal>SQL Query</Divider>
       <AwesomeAccordion
@@ -141,6 +148,7 @@ export default function SqlQuery(props: Props) {
       />
 
       <Divider horizontal>Stacktrace</Divider>
+      <div className="px-5 py-4 bg-white shadow-md rounded-lg">
       <SyntaxHighlighter
         language="ruby"
         className="border border-gray-300 rounded-lg"
@@ -149,9 +157,12 @@ export default function SqlQuery(props: Props) {
       >
         {JSON.stringify(JSON.parse(sqlQuery?.stacktrace.stacktrace!), null, 2)}
       </SyntaxHighlighter>
+      </div>
+
       {treeData != "" ? (
         <>
           <Divider horizontal>Query Plan</Divider>
+          <div className="px-5 py-4 bg-white shadow-md rounded-lg">
           <div className="overflow-y-auto">
             <TreevizReact
               data={treeData}
@@ -179,6 +190,7 @@ export default function SqlQuery(props: Props) {
               linkShape="curve"
               linkWidth={() => 2}
             />
+          </div>
           </div>
         </>
       ) : (

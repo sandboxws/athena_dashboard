@@ -1,9 +1,42 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Menu } from "antd";
+import {
+  AppstoreOutlined,
+  MailOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
+
+const { SubMenu } = Menu;
 
 export default function Sidebar() {
   return (
-    <div className="sidebar flex-shrink-0 w-64 bg-purple-900">
+    <div className="sidebar flex-shrink-0 w-64 bg-purple-600">
+      {/* <div className="flex items-center h-16 px-4 bg-blue-600 text-xl text-white font-medium">
+        <div className="ml-2">
+          <span className="font-light">Athena/</span>
+          <span className="p-0 m-0 font-bold">Dashboard</span>
+        </div>
+      </div>
+      <Menu
+        style={{ width: 256 }}
+        defaultSelectedKeys={["1"]}
+        defaultOpenKeys={["sub1"]}
+        mode="inline"
+      >
+        <SubMenu key="sub1" icon={<MailOutlined />} title="Dashboard">
+          <Menu.Item key="g1" title="Item 1">
+            <Link className="text-white" to="/">
+              Main
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="g1" title="Item 1">
+            <Link className="text-white" to="/queries">
+              Queries
+            </Link>
+          </Menu.Item>
+        </SubMenu>
+      </Menu> */}
       <a href="#">
         <div className="flex items-center h-16 px-4 bg-purple-800 text-xl text-white font-medium">
           <div className="ml-2">
@@ -23,7 +56,7 @@ export default function Sidebar() {
             </li>
             <li className="mt-3">
               <Link className="text-white" to="/queries">
-                Queries
+                MongoDB Queries
               </Link>
             </li>
             <li className="mt-3">
@@ -39,6 +72,11 @@ export default function Sidebar() {
             <li className="mt-3">
               <Link className="text-white" to="/sidekiq_workers">
                 Sidekiq Workers
+              </Link>
+            </li>
+            <li className="mt-3">
+              <Link className="text-white" to="/delayed_jobs">
+                Delayed Jobs
               </Link>
             </li>
             <li className="mt-3">

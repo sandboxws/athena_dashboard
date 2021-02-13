@@ -1,3 +1,6 @@
+@import "../../node_modules/antd/dist/antd.css";
+@import "../../node_modules/antd-button-color/dist/css/style.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

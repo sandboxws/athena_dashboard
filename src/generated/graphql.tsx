@@ -44,7 +44,7 @@ export type IAwesomeController = {
   /** Rails controller path */
   path: Scalars['String'];
   /** A unique id identifying a session during which queries are logged. */
-  sessionId: Scalars['String'];
+  sessionId: Maybe<Scalars['String']>;
   /** Controller stats */
   sqlOpsStats: Maybe<Array<IStat>>;
   /** Associated SQL Queries */
@@ -121,7 +121,7 @@ export type IController = {
   /** Rails controller path */
   path: Scalars['String'];
   /** A unique id identifying a session during which queries are logged. */
-  sessionId: Scalars['String'];
+  sessionId: Maybe<Scalars['String']>;
   /** Total duraiton of all logs */
   totalDuration: Scalars['Float'];
   /** Timestamp in UTC */
@@ -158,6 +158,102 @@ export type IDashboardMongodbLatestLogsArgs = {
   limit?: Maybe<Scalars['Int']>;
 };
 
+
+/** Delayed Job */
+export type IDelayedJob = {
+  __typename?: 'DelayedJob';
+  /** Average duration for a queries originating from this delayed job */
+  avgDuration: Scalars['Float'];
+  /** Timestamp in UTC */
+  createdAt: Scalars['DateTime'];
+  /** Delayed Job primary key */
+  id: Scalars['ID'];
+  /** Delayed worker jid */
+  jid: Scalars['String'];
+  /** Delayed job class */
+  job: Scalars['String'];
+  /** Max duration for a queries originating from this delayed job */
+  maxDuration: Scalars['Float'];
+  /** Min duration for a queries originating from this delayed job */
+  minDuration: Scalars['Float'];
+  /** Operations stats */
+  opsStats: Array<IStat>;
+  /** Delayed worker params */
+  params: Scalars['String'];
+  /** Delayed worker params */
+  paramsExcerpt: Scalars['String'];
+  /** Total count of SQL queries originating from this delayed job */
+  queriesCount: Scalars['Int'];
+  /** Delayed worker queue */
+  queue: Scalars['String'];
+  /** Tables stats */
+  tablesStats: Array<ITableStats>;
+  /** Total duration for a queries originating from this delayed job */
+  totalDuration: Scalars['Float'];
+  /** Timestamp in UTC */
+  updatedAt: Scalars['DateTime'];
+};
+
+export type IDelayedJobs = IPageable & {
+  __typename?: 'DelayedJobs';
+  currentPage: Maybe<Scalars['Int']>;
+  firstPage: Maybe<Scalars['Boolean']>;
+  lastPage: Maybe<Scalars['Boolean']>;
+  nextPage: Maybe<Scalars['Int']>;
+  nodes: Array<IDelayedJob>;
+  previousPage: Maybe<Scalars['Int']>;
+  size: Maybe<Scalars['Int']>;
+  totalItems: Maybe<Scalars['Int']>;
+  totalPages: Maybe<Scalars['Int']>;
+};
+
+/** Delayed Jobs with Stats */
+export type IDelayedJobsWithStats = {
+  __typename?: 'DelayedJobsWithStats';
+  delayedJobs: IDelayedJobs;
+  /** Delayed Jobs list */
+  jobs: Array<Scalars['String']>;
+  /** Delayed Jobs stats */
+  jobsStats: Array<IStat>;
+  /** Total number of queries */
+  queriesCount: Scalars['Int'];
+  /** Total duration (in seconds) of queries */
+  totalDuration: Scalars['Float'];
+};
+
+/** PostgreSQL DML Stat */
+export type IDmlStat = {
+  __typename?: 'DmlStat';
+  /** Timestamp in UTC */
+  createdAt: Scalars['DateTime'];
+  /** Primary key */
+  id: Scalars['ID'];
+  /** Schema name */
+  schemaName: Scalars['String'];
+  /** Table name */
+  tableName: Scalars['String'];
+  /** Total Deletes */
+  totalDeletes: Scalars['Int'];
+  /** Total Inserts */
+  totalInserts: Scalars['Int'];
+  /** Total Updates */
+  totalUpdates: Scalars['Int'];
+  /** Timestamp in UTC */
+  updatedAt: Scalars['DateTime'];
+};
+
+export type IDmlStats = IPageable & {
+  __typename?: 'DmlStats';
+  currentPage: Maybe<Scalars['Int']>;
+  firstPage: Maybe<Scalars['Boolean']>;
+  lastPage: Maybe<Scalars['Boolean']>;
+  nextPage: Maybe<Scalars['Int']>;
+  nodes: Array<IDmlStat>;
+  previousPage: Maybe<Scalars['Int']>;
+  size: Maybe<Scalars['Int']>;
+  totalItems: Maybe<Scalars['Int']>;
+  totalPages: Maybe<Scalars['Int']>;
+};
 
 /** MongoDB Query Explain */
 export type IExplain = {
@@ -311,12 +407,16 @@ export type IQuery = {
   controller: IAwesomeController;
   controllers: IAwesomeControllers;
   dashboard: IDashboard;
+  delayedJob: IDelayedJob;
+  delayedJobsWithStats: IDelayedJobsWithStats;
   globalStats: IGlobalStats;
   logsWithStats: ILogsWithStats;
   mongodbExplains: Array<IExplain>;
   mongodbLog: ILog;
   mongodbLogs: ILogs;
   mongodbStacktrace: IStacktrace;
+  pgDmlStats: IDmlStats;
+  pgSeqScans: ISeqScans;
   sidekiqWorker: ISidekiqWorker;
   sidekiqWorkersWithStats: ISidekiqWorkersWithStats;
   sqlQueriesWithStats: ISqlQueriesWithStats;
@@ -336,6 +436,19 @@ export type IQueryControllersArgs = {
   limit?: Maybe<Scalars['Int']>;
   page?: Maybe<Scalars['Int']>;
   names?: Maybe<Array<Scalars['String']>>;
+  mode?: Maybe<Scalars['String']>;
+};
+
+
+export type IQueryDelayedJobArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type IQueryDelayedJobsWithStatsArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  page?: Maybe<Scalars['Int']>;
+  jobs?: Maybe<Array<Scalars['String']>>;
   mode?: Maybe<Scalars['String']>;
 };
 
@@ -387,6 +500,18 @@ export type IQueryMongodbStacktraceArgs = {
 };
 
 
+export type IQueryPgDmlStatsArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  page?: Maybe<Scalars['Int']>;
+};
+
+
+export type IQueryPgSeqScansArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  page?: Maybe<Scalars['Int']>;
+};
+
+
 export type IQuerySidekiqWorkerArgs = {
   id: Scalars['Int'];
 };
@@ -405,6 +530,7 @@ export type IQuerySqlQueriesWithStatsArgs = {
   controllerId: Maybe<Scalars['Int']>;
   stacktraceId: Maybe<Scalars['Int']>;
   sidekiqWorkerId: Maybe<Scalars['Int']>;
+  delayedJobId: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['Int']>;
   page?: Maybe<Scalars['Int']>;
   tables?: Maybe<Array<Scalars['String']>>;
@@ -422,6 +548,44 @@ export type IQuerySqlQueryArgs = {
 export type IQueryStacktracesArgs = {
   limit?: Maybe<Scalars['Int']>;
   page?: Maybe<Scalars['Int']>;
+};
+
+/** PostgreSQL Seq Scans */
+export type ISeqScan = {
+  __typename?: 'SeqScan';
+  /** Timestamp in UTC */
+  createdAt: Scalars['DateTime'];
+  /** Primary key */
+  id: Scalars['ID'];
+  /** Index Scans */
+  indexScans: Scalars['Int'];
+  /** Index Tuple Fetch */
+  indexTupleFetch: Scalars['Int'];
+  /** Schema name */
+  schemaName: Scalars['String'];
+  /** Seq scans */
+  seqScans: Scalars['Int'];
+  /** Seq Tuple Reads */
+  seqTupleReads: Scalars['Int'];
+  /** Table size in bytes */
+  sizeBytes: Scalars['Int'];
+  /** Table name */
+  tableName: Scalars['String'];
+  /** Timestamp in UTC */
+  updatedAt: Scalars['DateTime'];
+};
+
+export type ISeqScans = IPageable & {
+  __typename?: 'SeqScans';
+  currentPage: Maybe<Scalars['Int']>;
+  firstPage: Maybe<Scalars['Boolean']>;
+  lastPage: Maybe<Scalars['Boolean']>;
+  nextPage: Maybe<Scalars['Int']>;
+  nodes: Array<ISeqScan>;
+  previousPage: Maybe<Scalars['Int']>;
+  size: Maybe<Scalars['Int']>;
+  totalItems: Maybe<Scalars['Int']>;
+  totalPages: Maybe<Scalars['Int']>;
 };
 
 /** Sidekiq Job */
@@ -584,7 +748,7 @@ export type ISqlQuery = {
   /** Schema name */
   schemaName: Scalars['String'];
   /** A unique id identifying a session during which queries are logged. */
-  sessionId: Scalars['String'];
+  sessionId: Maybe<Scalars['String']>;
   /** Sidekiq job args */
   sidekiqArgs: Maybe<Scalars['String']>;
   /** Associated Sidekiq Job */
@@ -683,7 +847,7 @@ export type IControllerQueryVariables = {
 };
 
 
-export type IControllerQuery = { __typename?: 'Query', controller: { __typename?: 'AwesomeController', id: string, name: string, action: string, path: string, params: string, paramsExcerpt: string, logsCount: Maybe<number>, sessionId: string, totalDuration: Maybe<number>, sqlTotalDuration: Maybe<number>, sqlQueriesCount: Maybe<number>, collscans: Maybe<number>, createdAt: any, updatedAt: any, opsStats: Maybe<Array<{ __typename?: 'Stat', name: string, value: number }>>, sqlOpsStats: Maybe<Array<{ __typename?: 'Stat', name: string, value: number }>>, collectionsStats: Maybe<Array<{ __typename?: 'CollectionStats', name: string, stats: Array<{ __typename?: 'Stat', name: string, value: number }> }>>, tablesStats: Maybe<Array<{ __typename?: 'TableStats', name: string, stats: Array<{ __typename?: 'Stat', name: string, value: number }> }>> } };
+export type IControllerQuery = { __typename?: 'Query', controller: { __typename?: 'AwesomeController', id: string, name: string, action: string, path: string, params: string, paramsExcerpt: string, logsCount: Maybe<number>, sessionId: Maybe<string>, totalDuration: Maybe<number>, sqlTotalDuration: Maybe<number>, sqlQueriesCount: Maybe<number>, collscans: Maybe<number>, createdAt: any, updatedAt: any, opsStats: Maybe<Array<{ __typename?: 'Stat', name: string, value: number }>>, sqlOpsStats: Maybe<Array<{ __typename?: 'Stat', name: string, value: number }>>, collectionsStats: Maybe<Array<{ __typename?: 'CollectionStats', name: string, stats: Array<{ __typename?: 'Stat', name: string, value: number }> }>>, tablesStats: Maybe<Array<{ __typename?: 'TableStats', name: string, stats: Array<{ __typename?: 'Stat', name: string, value: number }> }>> } };
 
 export type IAwesomeControllerLogsQueryVariables = {
   id: Scalars['Int'];
@@ -710,6 +874,23 @@ export type IDashboardLatestLogsQueryQueryVariables = {};
 
 
 export type IDashboardLatestLogsQueryQuery = { __typename?: 'Query', dashboard: { __typename?: 'Dashboard', mongodbLatestLogs: Array<{ __typename?: 'Log', id: string, collection: string, operation: string, command: string, commandExcerpt: string, duration: number, createdAt: any }> } };
+
+export type ILatestDelayedJobsWithStatsQueryVariables = {
+  mode: Maybe<Scalars['String']>;
+  limit: Maybe<Scalars['Int']>;
+  page: Maybe<Scalars['Int']>;
+  jobs: Maybe<Array<Scalars['String']>>;
+};
+
+
+export type ILatestDelayedJobsWithStatsQuery = { __typename?: 'Query', delayedJobsWithStats: { __typename?: 'DelayedJobsWithStats', queriesCount: number, totalDuration: number, jobs: Array<string>, jobsStats: Array<{ __typename?: 'Stat', name: string, value: number }>, delayedJobs: { __typename?: 'DelayedJobs', currentPage: Maybe<number>, previousPage: Maybe<number>, nextPage: Maybe<number>, totalItems: Maybe<number>, totalPages: Maybe<number>, nodes: Array<{ __typename?: 'DelayedJob', id: string, job: string, jid: string, params: string, queriesCount: number, minDuration: number, maxDuration: number, avgDuration: number }> } } };
+
+export type IDelayedJobQueryVariables = {
+  id: Scalars['Int'];
+};
+
+
+export type IDelayedJobQuery = { __typename?: 'Query', delayedJob: { __typename?: 'DelayedJob', id: string, job: string, jid: string, params: string, paramsExcerpt: string, queriesCount: number, totalDuration: number, minDuration: number, maxDuration: number, avgDuration: number, opsStats: Array<{ __typename?: 'Stat', name: string, value: number }>, tablesStats: Array<{ __typename?: 'TableStats', name: string, stats: Array<{ __typename?: 'Stat', name: string, value: number }> }> } };
 
 export type ILatestLogsQueryVariables = {
   controllerId: Maybe<Scalars['Int']>;
@@ -777,6 +958,7 @@ export type ILatestSqlQueriesWithStatsQueryVariables = {
   controllerId: Maybe<Scalars['Int']>;
   stacktraceId: Maybe<Scalars['Int']>;
   sidekiqWorkerId: Maybe<Scalars['Int']>;
+  delayedJobId: Maybe<Scalars['Int']>;
   mode: Maybe<Scalars['String']>;
   limit: Maybe<Scalars['Int']>;
   page: Maybe<Scalars['Int']>;
@@ -1249,6 +1431,156 @@ export function useDashboardLatestLogsQueryLazyQuery(baseOptions?: ApolloReactHo
 export type DashboardLatestLogsQueryQueryHookResult = ReturnType<typeof useDashboardLatestLogsQueryQuery>;
 export type DashboardLatestLogsQueryLazyQueryHookResult = ReturnType<typeof useDashboardLatestLogsQueryLazyQuery>;
 export type DashboardLatestLogsQueryQueryResult = ApolloReactCommon.QueryResult<IDashboardLatestLogsQueryQuery, IDashboardLatestLogsQueryQueryVariables>;
+export const LatestDelayedJobsWithStatsDocument = gql`
+    query LatestDelayedJobsWithStats($mode: String, $limit: Int, $page: Int, $jobs: [String!]) {
+  delayedJobsWithStats(mode: $mode, limit: $limit, page: $page, jobs: $jobs) {
+    queriesCount
+    totalDuration
+    jobs
+    jobsStats {
+      name
+      value
+    }
+    delayedJobs {
+      currentPage
+      previousPage
+      nextPage
+      totalItems
+      totalPages
+      nodes {
+        id
+        job
+        jid
+        params
+        queriesCount
+        minDuration
+        maxDuration
+        avgDuration
+      }
+    }
+  }
+}
+    `;
+export type LatestDelayedJobsWithStatsComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<ILatestDelayedJobsWithStatsQuery, ILatestDelayedJobsWithStatsQueryVariables>, 'query'>;
+
+    export const LatestDelayedJobsWithStatsComponent = (props: LatestDelayedJobsWithStatsComponentProps) => (
+      <ApolloReactComponents.Query<ILatestDelayedJobsWithStatsQuery, ILatestDelayedJobsWithStatsQueryVariables> query={LatestDelayedJobsWithStatsDocument} {...props} />
+    );
+    
+export type ILatestDelayedJobsWithStatsProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<ILatestDelayedJobsWithStatsQuery, ILatestDelayedJobsWithStatsQueryVariables>
+    } & TChildProps;
+export function withLatestDelayedJobsWithStats<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  ILatestDelayedJobsWithStatsQuery,
+  ILatestDelayedJobsWithStatsQueryVariables,
+  ILatestDelayedJobsWithStatsProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, ILatestDelayedJobsWithStatsQuery, ILatestDelayedJobsWithStatsQueryVariables, ILatestDelayedJobsWithStatsProps<TChildProps, TDataName>>(LatestDelayedJobsWithStatsDocument, {
+      alias: 'latestDelayedJobsWithStats',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useLatestDelayedJobsWithStatsQuery__
+ *
+ * To run a query within a React component, call `useLatestDelayedJobsWithStatsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLatestDelayedJobsWithStatsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLatestDelayedJobsWithStatsQuery({
+ *   variables: {
+ *      mode: // value for 'mode'
+ *      limit: // value for 'limit'
+ *      page: // value for 'page'
+ *      jobs: // value for 'jobs'
+ *   },
+ * });
+ */
+export function useLatestDelayedJobsWithStatsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ILatestDelayedJobsWithStatsQuery, ILatestDelayedJobsWithStatsQueryVariables>) {
+        return ApolloReactHooks.useQuery<ILatestDelayedJobsWithStatsQuery, ILatestDelayedJobsWithStatsQueryVariables>(LatestDelayedJobsWithStatsDocument, baseOptions);
+      }
+export function useLatestDelayedJobsWithStatsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ILatestDelayedJobsWithStatsQuery, ILatestDelayedJobsWithStatsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<ILatestDelayedJobsWithStatsQuery, ILatestDelayedJobsWithStatsQueryVariables>(LatestDelayedJobsWithStatsDocument, baseOptions);
+        }
+export type LatestDelayedJobsWithStatsQueryHookResult = ReturnType<typeof useLatestDelayedJobsWithStatsQuery>;
+export type LatestDelayedJobsWithStatsLazyQueryHookResult = ReturnType<typeof useLatestDelayedJobsWithStatsLazyQuery>;
+export type LatestDelayedJobsWithStatsQueryResult = ApolloReactCommon.QueryResult<ILatestDelayedJobsWithStatsQuery, ILatestDelayedJobsWithStatsQueryVariables>;
+export const DelayedJobDocument = gql`
+    query DelayedJob($id: Int!) {
+  delayedJob(id: $id) {
+    id
+    job
+    jid
+    params
+    paramsExcerpt
+    queriesCount
+    totalDuration
+    minDuration
+    maxDuration
+    avgDuration
+    opsStats {
+      name
+      value
+    }
+    tablesStats {
+      name
+      stats {
+        name
+        value
+      }
+    }
+  }
+}
+    `;
+export type DelayedJobComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<IDelayedJobQuery, IDelayedJobQueryVariables>, 'query'> & ({ variables: IDelayedJobQueryVariables; skip?: boolean; } | { skip: boolean; });
+
+    export const DelayedJobComponent = (props: DelayedJobComponentProps) => (
+      <ApolloReactComponents.Query<IDelayedJobQuery, IDelayedJobQueryVariables> query={DelayedJobDocument} {...props} />
+    );
+    
+export type IDelayedJobProps<TChildProps = {}, TDataName extends string = 'data'> = {
+      [key in TDataName]: ApolloReactHoc.DataValue<IDelayedJobQuery, IDelayedJobQueryVariables>
+    } & TChildProps;
+export function withDelayedJob<TProps, TChildProps = {}, TDataName extends string = 'data'>(operationOptions?: ApolloReactHoc.OperationOption<
+  TProps,
+  IDelayedJobQuery,
+  IDelayedJobQueryVariables,
+  IDelayedJobProps<TChildProps, TDataName>>) {
+    return ApolloReactHoc.withQuery<TProps, IDelayedJobQuery, IDelayedJobQueryVariables, IDelayedJobProps<TChildProps, TDataName>>(DelayedJobDocument, {
+      alias: 'delayedJob',
+      ...operationOptions
+    });
+};
+
+/**
+ * __useDelayedJobQuery__
+ *
+ * To run a query within a React component, call `useDelayedJobQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDelayedJobQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDelayedJobQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDelayedJobQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<IDelayedJobQuery, IDelayedJobQueryVariables>) {
+        return ApolloReactHooks.useQuery<IDelayedJobQuery, IDelayedJobQueryVariables>(DelayedJobDocument, baseOptions);
+      }
+export function useDelayedJobLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<IDelayedJobQuery, IDelayedJobQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<IDelayedJobQuery, IDelayedJobQueryVariables>(DelayedJobDocument, baseOptions);
+        }
+export type DelayedJobQueryHookResult = ReturnType<typeof useDelayedJobQuery>;
+export type DelayedJobLazyQueryHookResult = ReturnType<typeof useDelayedJobLazyQuery>;
+export type DelayedJobQueryResult = ApolloReactCommon.QueryResult<IDelayedJobQuery, IDelayedJobQueryVariables>;
 export const LatestLogsDocument = gql`
     query LatestLogs($controllerId: Int, $stacktraceId: Int, $mode: String, $limit: Int, $page: Int, $collections: [String!], $operations: [String!], $sourceNames: [String!]) {
   mongodbLogs(mode: $mode, limit: $limit, page: $page, controllerId: $controllerId, stacktraceId: $stacktraceId, collections: $collections, operations: $operations, sourceNames: $sourceNames) {
@@ -1722,8 +2054,8 @@ export type SidekiqWorkerQueryHookResult = ReturnType<typeof useSidekiqWorkerQue
 export type SidekiqWorkerLazyQueryHookResult = ReturnType<typeof useSidekiqWorkerLazyQuery>;
 export type SidekiqWorkerQueryResult = ApolloReactCommon.QueryResult<ISidekiqWorkerQuery, ISidekiqWorkerQueryVariables>;
 export const LatestSqlQueriesWithStatsDocument = gql`
-    query LatestSqlQueriesWithStats($controllerId: Int, $stacktraceId: Int, $sidekiqWorkerId: Int, $mode: String, $limit: Int, $page: Int, $tables: [String!], $operations: [String!], $sourceNames: [String!]) {
-  sqlQueriesWithStats(controllerId: $controllerId, stacktraceId: $stacktraceId, sidekiqWorkerId: $sidekiqWorkerId, mode: $mode, limit: $limit, page: $page, tables: $tables, operations: $operations, sourceNames: $sourceNames) {
+    query LatestSqlQueriesWithStats($controllerId: Int, $stacktraceId: Int, $sidekiqWorkerId: Int, $delayedJobId: Int, $mode: String, $limit: Int, $page: Int, $tables: [String!], $operations: [String!], $sourceNames: [String!]) {
+  sqlQueriesWithStats(controllerId: $controllerId, stacktraceId: $stacktraceId, sidekiqWorkerId: $sidekiqWorkerId, delayedJobId: $delayedJobId, mode: $mode, limit: $limit, page: $page, tables: $tables, operations: $operations, sourceNames: $sourceNames) {
     tables
     operations
     sourceNames
@@ -1799,6 +2131,7 @@ export function withLatestSqlQueriesWithStats<TProps, TChildProps = {}, TDataNam
  *      controllerId: // value for 'controllerId'
  *      stacktraceId: // value for 'stacktraceId'
  *      sidekiqWorkerId: // value for 'sidekiqWorkerId'
+ *      delayedJobId: // value for 'delayedJobId'
  *      mode: // value for 'mode'
  *      limit: // value for 'limit'
  *      page: // value for 'page'

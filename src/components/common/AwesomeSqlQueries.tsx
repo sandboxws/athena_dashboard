@@ -17,6 +17,7 @@ type Props = {
   controllerId?: number;
   stacktraceId?: number;
   sidekiqWorkerId?: number;
+  delayedJobId?: number;
   limit?: number;
 };
 
@@ -44,9 +45,15 @@ const initialState = {
   selectedSourceNames: [],
 } as State;
 
-export default function AwesomeLogs(props: Props) {
+export default function AwesomeSqlQueries(props: Props) {
   const [state, setState] = useState(initialState);
-  const { controllerId, stacktraceId, sidekiqWorkerId, limit } = props;
+  const {
+    controllerId,
+    stacktraceId,
+    sidekiqWorkerId,
+    delayedJobId,
+    limit,
+  } = props;
 
   const handlePaginationChange = (
     _e: SyntheticEvent,
@@ -63,6 +70,7 @@ export default function AwesomeLogs(props: Props) {
     operations: state.selectedOperations as string[],
     page: state.activePage as number,
     sidekiqWorkerId: sidekiqWorkerId ?? null,
+    delayedJobId: delayedJobId ?? null,
     sourceNames: state.selectedSourceNames as string[],
     stacktraceId: stacktraceId ?? null,
   };
